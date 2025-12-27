@@ -225,7 +225,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "HistoricMasterSalesDF_OneTime",
+						"referenceName": "bharatpay_oneTime",
 						"type": "DataFlowReference",
 						"parameters": {
 							"today_date": "toString(currentDate('IST'))"
