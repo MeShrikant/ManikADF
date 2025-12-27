@@ -1,0 +1,1923 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "craftaiadf"
+		},
+		"BharatPay_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'BharatPay'"
+		},
+		"CraftaiManikSQL_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'CraftaiManikSQL'"
+		},
+		"ManikSqlServer_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ManikSqlServer'"
+		},
+		"BharatPay_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://storageforrecon.dfs.core.windows.net/"
+		},
+		"CraftaiManikSQL_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "135.235.162.172"
+		},
+		"CraftaiManikSQL_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "ManikMobile"
+		},
+		"CraftaiManikSQL_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sql_admin"
+		},
+		"ManikSqlServer_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "125.20.207.170"
+		},
+		"ManikSqlServer_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Upplus"
+		},
+		"ManikSqlServer_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "Historic"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/BharatPay')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('BharatPay_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('BharatPay_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CraftaiManikSQL')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"server": "[parameters('CraftaiManikSQL_properties_typeProperties_server')]",
+					"database": "[parameters('CraftaiManikSQL_properties_typeProperties_database')]",
+					"encrypt": "optional",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('CraftaiManikSQL_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('CraftaiManikSQL_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ManikSqlServer')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"server": "[parameters('ManikSqlServer_properties_typeProperties_server')]",
+					"database": "[parameters('ManikSqlServer_properties_typeProperties_database')]",
+					"encrypt": "optional",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('ManikSqlServer_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ManikSqlServer_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/integrationRuntime-ci')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "Central India",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 10,
+							"cleanup": false,
+							"customProperties": []
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/integrationRuntime-craftai')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HistoricInterBranch')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CraftaiManikSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "HistoricInterBranch"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CraftaiManikSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HistoricPurchaseData')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CraftaiManikSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "HistoricPurchaseData"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CraftaiManikSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HistoricSalesData')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CraftaiManikSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Actual sale Rate",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "batchno",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Billtime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Branch",
+						"type": "nvarchar"
+					},
+					{
+						"name": "BranchShortName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Brand",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Company",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CounterNo",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "CPU+GST",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CustomerGroup",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CustomerGSTIN",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Custid",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "CustomerPANNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CustomerState",
+						"type": "nvarchar"
+					},
+					{
+						"name": "date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "EAN ProductId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "EWAYBIllno",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ExpiryDate",
+						"type": "nvarchar"
+					},
+					{
+						"name": "HSNCode",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PurDate",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LastPurQty",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "LineDisc%",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "MRP",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Product Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ProductId",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "REorderLevel",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 3
+					},
+					{
+						"name": "ReOrderQty",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 3
+					},
+					{
+						"name": "SaleRate",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "SaleMobileNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Salesman",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SalesmanId",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "Subcategory",
+						"type": "nvarchar"
+					},
+					{
+						"name": "User",
+						"type": "nvarchar"
+					},
+					{
+						"name": "VAT/GST %",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "VoucherNo",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "Quantity",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 4
+					},
+					{
+						"name": "Customer Address",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Line Discount Amt",
+						"type": "real",
+						"precision": 7
+					},
+					{
+						"name": "LineAmt",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "FullImeiNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Activationdate",
+						"type": "varchar"
+					},
+					{
+						"name": "IRNno",
+						"type": "nvarchar"
+					},
+					{
+						"name": "IRNdate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "GrossAmt",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "BasicAmt",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "CGSTAmount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "SGSTAmount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "IGSTAmount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Mop",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "HistoricSalesData"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CraftaiManikSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HistoricStock')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CraftaiManikSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "Productid",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "ProductName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "IMEINo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SubCategory",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Brand",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Model",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Color",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CompanyName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CPU",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "PurchaseDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "LastPurQty",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "LastPurVoucherno",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "Location",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MProductId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MRP",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Price",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "ProductCreationdate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "PurRate",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "ReorderLevel",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 3
+					},
+					{
+						"name": "ReorderQty",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 3
+					},
+					{
+						"name": "Supplier",
+						"type": "nvarchar"
+					},
+					{
+						"name": "suppliercity",
+						"type": "nvarchar"
+					},
+					{
+						"name": "GSTPer",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "HistoricStock"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CraftaiManikSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Historic_Mastersales')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CraftaiManikSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Historic_Mastersales"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CraftaiManikSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ManikSQLServerProd')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ManikSqlServer",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "Date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Voucherno",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "User",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Productid",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "ProductName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Qty",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 3
+					},
+					{
+						"name": "Amount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SubCategory",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Brand",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Model",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Color",
+						"type": "nvarchar"
+					},
+					{
+						"name": "IMEINo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FromBranch",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ToBranch",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Historic_Mastersales"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ManikSqlServer')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HistoricInterBranch')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "HistoricInterBranch",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "select * from [dbo].[HistoricInterBranch] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": {
+									"value": "delete from [dbo].[HistoricInterBranch] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"type": "Expression"
+								},
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ManikSQLServerProd",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "HistoricInterBranch",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-12-26T14:43:31Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ManikSQLServerProd')]",
+				"[concat(variables('factoryId'), '/datasets/HistoricInterBranch')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HistoricPurchaseData')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "HistoricPurchaseData",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "select * from [dbo].[HistoricPurchaseData] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": {
+									"value": "Delete from [dbo].[HistoricPurchaseData] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"type": "Expression"
+								},
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ManikSQLServerProd",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "HistoricPurchaseData",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-12-26T14:43:31Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ManikSQLServerProd')]",
+				"[concat(variables('factoryId'), '/datasets/HistoricPurchaseData')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HistoricSalesData')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "HistoricSalesData",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "select * from [dbo].[HistoricSalesData] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": {
+									"value": "Delete from [dbo].[HistoricSalesData] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"type": "Expression"
+								},
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ManikSQLServerProd",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "HistoricSalesData",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-12-26T14:43:31Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ManikSQLServerProd')]",
+				"[concat(variables('factoryId'), '/datasets/HistoricSalesData')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HistoricStock')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "HistoricStock",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "select * from [dbo].[HistoricStock] where PurchaseDate = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": {
+									"value": "delete from [dbo].[HistoricStock] where PurchaseDate = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"type": "Expression"
+								},
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ManikSQLServerProd",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "HistoricStock",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-12-26T14:43:31Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ManikSQLServerProd')]",
+				"[concat(variables('factoryId'), '/datasets/HistoricStock')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HistoricMasterSalesDF')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ManikSQLServerProd",
+								"type": "DatasetReference"
+							},
+							"name": "CraftAISQLMasterSales"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "Historic_Mastersales",
+								"type": "DatasetReference"
+							},
+							"name": "MasterSalesSink"
+						}
+					],
+					"transformations": [
+						{
+							"name": "BharatPayUTR",
+							"description": "Bharatpay UTR"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     today_date as string (toString(currentDate('IST')))",
+						"}",
+						"source(output(",
+						"          Branch as string,",
+						"          voucherno as long,",
+						"          date as timestamp,",
+						"          Time as string,",
+						"          custid as long,",
+						"          customer as string,",
+						"          GSTIN as string,",
+						"          TCSApplicableAmt as decimal(19,4),",
+						"          TcsAmount as decimal(19,4),",
+						"          Netamount as decimal(19,4),",
+						"          cash as decimal(19,4),",
+						"          AC as decimal(19,4),",
+						"          {AC InstruNo} as string,",
+						"          {AC InstruDate} as timestamp,",
+						"          Advance1 as decimal(19,4),",
+						"          {Advance1 InstruNo} as string,",
+						"          {Advance1 Instrudate} as timestamp,",
+						"          AMAZON as decimal(19,4),",
+						"          {AMAZON InstruNo} as string,",
+						"          {AMAZON Instrudate} as timestamp,",
+						"          {Bajaj Finance} as decimal(19,4),",
+						"          {Bajaj Finance InstruNo} as string,",
+						"          {Bajaj Finance Instrudate} as timestamp,",
+						"          Cheque as decimal(19,4),",
+						"          {Cheque InstruNo} as string,",
+						"          {Cheque Instrudate} as timestamp,",
+						"          {Pinelab  Credit Card / Debit Card} as decimal(19,4),",
+						"          {Pinelab  Credit Card / Debit Card InstruNo} as string,",
+						"          {Pinelab  Credit Card / Debit Card Instrudate} as timestamp,",
+						"          {Credit Note} as decimal(19,4),",
+						"          {Credit Note InstruNo} as string,",
+						"          {Credit Note Instrudate} as timestamp,",
+						"          {Hdb Finance} as decimal(19,4),",
+						"          {Hdb Finance InstruNo} as string,",
+						"          {Hdb Finance Instrudate} as timestamp,",
+						"          {Hdfc Finance} as decimal(19,4),",
+						"          {Hdfc Finance InstruNo} as string,",
+						"          {Hdfc Finance Instrudate} as timestamp,",
+						"          {Home Credit Finance} as decimal(19,4),",
+						"          {Home Credit Finance InstruNo} as string,",
+						"          {Home Credit Finance Instrudate} as timestamp,",
+						"          {Online Payment Transfer} as decimal(19,4),",
+						"          {Online Payment Transfer InstruNo} as string,",
+						"          {Online Payment Transfer Instrudate} as timestamp,",
+						"          {Samsung Sure Finance} as decimal(19,4),",
+						"          {Samsung Sure Finance InstruNo} as string,",
+						"          {Samsung Sure Finance Instrudate} as timestamp,",
+						"          {Tvs Finance} as decimal(19,4),",
+						"          {Tvs Finance InstruNo} as string,",
+						"          {Tvs Finance Instrudate} as timestamp,",
+						"          {Icici Finance} as decimal(19,4),",
+						"          {Icici Finance InstruNo} as string,",
+						"          {Icici Finance Instrudate} as timestamp,",
+						"          {Bharatpe Payment} as decimal(19,4),",
+						"          {Bharatpe Payment InstruNo} as string,",
+						"          {Bharatpe Payment Instrudate} as timestamp,",
+						"          {Idfc First Finance} as decimal(19,4),",
+						"          {Idfc First Finance InstruNo} as string,",
+						"          {Idfc First Finance Instrudate} as timestamp,",
+						"          {Upgrad Program} as decimal(19,4),",
+						"          {Upgrad Program InstruNo} as string,",
+						"          {Upgrad Program Instrudate} as timestamp,",
+						"          {MAHINDRA FINANCE} as decimal(19,4),",
+						"          {MAHINDRA FINANCE InstruNo} as string,",
+						"          {MAHINDRA FINANCE Instrudate} as timestamp,",
+						"          {Paytm  Credit Card / Debit Card} as decimal(19,4),",
+						"          {Paytm  Credit Card / Debit Card InstruNo} as string,",
+						"          {Paytm  Credit Card / Debit Card Instrudate} as timestamp,",
+						"          {ZEST MONEY FINANCE} as decimal(19,4),",
+						"          {ZEST MONEY FINANCE InstruNo} as string,",
+						"          {ZEST MONEY FINANCE Instrudate} as timestamp,",
+						"          {Innoviti  Credit Card / Debit Card} as decimal(19,4),",
+						"          {Innoviti  Credit Card / Debit Card InstruNo} as string,",
+						"          {Innoviti  Credit Card / Debit Card Instrudate} as timestamp,",
+						"          {S S K  APPLIENCES} as decimal(19,4),",
+						"          {S S K  APPLIENCES InstruNo} as string,",
+						"          {S S K  APPLIENCES Instrudate} as timestamp,",
+						"          Flipkart as decimal(19,4),",
+						"          {Flipkart InstruNo} as string,",
+						"          {Flipkart Instrudate} as timestamp,",
+						"          {Order Id} as decimal(19,4),",
+						"          {Order Id InstruNo} as string,",
+						"          {Order Id Instrudate} as timestamp,",
+						"          {Reference Number} as decimal(19,4),",
+						"          {Reference Number InstruNo} as string,",
+						"          {Reference Number Instrudate} as timestamp,",
+						"          {Flipkart Commission Charges} as decimal(19,4),",
+						"          {Flipkart Commission Charges InstruNo} as string,",
+						"          {Flipkart Commission Charges Instrudate} as timestamp,",
+						"          {Amazon Commission Charges} as decimal(19,4),",
+						"          {Amazon Commission Charges InstruNo} as string,",
+						"          {Amazon Commission Charges Instrudate} as timestamp,",
+						"          {Tcs And Tds} as decimal(19,4),",
+						"          {Tcs And Tds InstruNo} as string,",
+						"          {Tcs And Tds Instrudate} as timestamp,",
+						"          {In Account} as decimal(19,4),",
+						"          {In Account InstruNo} as string,",
+						"          {In Account Instrudate} as timestamp,",
+						"          {Bajaj Credit Card / Debit Card} as decimal(19,4),",
+						"          {Bajaj Credit Card / Debit Card InstruNo} as string,",
+						"          {Bajaj Credit Card / Debit Card Instrudate} as timestamp,",
+						"          {Chola Finance} as decimal(19,4),",
+						"          {Chola Finance InstruNo} as string,",
+						"          {Chola Finance Instrudate} as timestamp,",
+						"          {Kotak Mahindra Bank Finance} as decimal(19,4),",
+						"          {Kotak Mahindra Bank Finance InstruNo} as string,",
+						"          {Kotak Mahindra Bank Finance Instrudate} as timestamp,",
+						"          {Gift Account} as decimal(19,4),",
+						"          {Gift Account InstruNo} as string,",
+						"          {Gift Account Instrudate} as timestamp,",
+						"          {Tcs Gst} as decimal(19,4),",
+						"          {Tcs Gst InstruNo} as string,",
+						"          {Tcs Gst Instrudate} as timestamp,",
+						"          {Tds Income Tax} as decimal(19,4),",
+						"          {Tds Income Tax InstruNo} as string,",
+						"          {Tds Income Tax Instrudate} as timestamp,",
+						"          {Flipkart Invoice No} as decimal(19,4),",
+						"          {Flipkart Invoice No InstruNo} as string,",
+						"          {Flipkart Invoice No Instrudate} as timestamp,",
+						"          {Amazon Invoice No} as decimal(19,4),",
+						"          {Amazon Invoice No InstruNo} as string,",
+						"          {Amazon Invoice No Instrudate} as timestamp,",
+						"          {Benow Payment} as decimal(19,4),",
+						"          {Benow Payment InstruNo} as string,",
+						"          {Benow Payment Instrudate} as timestamp,",
+						"          {Poonawalla Fincorp Limited} as decimal(19,4),",
+						"          {Poonawalla Fincorp Limited InstruNo} as string,",
+						"          {Poonawalla Fincorp Limited Instrudate} as timestamp,",
+						"          Advance as decimal(19,4),",
+						"          {Advance InstruNo} as string,",
+						"          {Advance Instrudate} as timestamp,",
+						"          Amezon1 as decimal(19,4),",
+						"          {Amezon1 InstruNo} as string,",
+						"          {Amezon1 Instrudate} as timestamp,",
+						"          {Baghbahar Pvt Ltd} as decimal(19,4),",
+						"          {Baghbahar Pvt Ltd InstruNo} as string,",
+						"          {Baghbahar Pvt Ltd Instrudate} as timestamp,",
+						"          {Bajaj Finance Online} as decimal(19,4),",
+						"          {Bajaj Finance Online InstruNo} as string,",
+						"          {Bajaj Finance Online Instrudate} as timestamp,",
+						"          {INSTANT CASHBACK} as decimal(19,4),",
+						"          {INSTANT CASHBACK InstruNo} as string,",
+						"          {INSTANT CASHBACK Instrudate} as timestamp,",
+						"          {Manik Online Website} as decimal(19,4),",
+						"          {Manik Online Website InstruNo} as string,",
+						"          {Manik Online Website Instrudate} as timestamp,",
+						"          {Old Buyback} as decimal(19,4),",
+						"          {Old Buyback InstruNo} as string,",
+						"          {Old Buyback Instrudate} as timestamp",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: (concat(\"select * from [dbo].[Historic_Mastersales] where date = '\",$today_date , \"'\")),",
+						"     format: 'query') ~> CraftAISQLMasterSales",
+						"CraftAISQLMasterSales derive(BharatPayUTR = substring({Bharatpe Payment InstruNo}, 7)) ~> BharatPayUTR",
+						"BharatPayUTR sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> MasterSalesSink"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ManikSQLServerProd')]",
+				"[concat(variables('factoryId'), '/datasets/Historic_Mastersales')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HistoricMasterSalesDF_OneTime')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ManikSQLServerProd",
+								"type": "DatasetReference"
+							},
+							"name": "CraftAISQLMasterSales"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "Historic_Mastersales",
+								"type": "DatasetReference"
+							},
+							"name": "MasterSalesSink"
+						}
+					],
+					"transformations": [
+						{
+							"name": "BharatPayUTR",
+							"description": "Bharatpay UTR"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     today_date as string (toString(currentDate('IST')))",
+						"}",
+						"source(output(",
+						"          Branch as string,",
+						"          voucherno as long,",
+						"          date as timestamp,",
+						"          Time as string,",
+						"          custid as long,",
+						"          customer as string,",
+						"          GSTIN as string,",
+						"          TCSApplicableAmt as decimal(19,4),",
+						"          TcsAmount as decimal(19,4),",
+						"          Netamount as decimal(19,4),",
+						"          cash as decimal(19,4),",
+						"          AC as decimal(19,4),",
+						"          {AC InstruNo} as string,",
+						"          {AC InstruDate} as timestamp,",
+						"          Advance1 as decimal(19,4),",
+						"          {Advance1 InstruNo} as string,",
+						"          {Advance1 Instrudate} as timestamp,",
+						"          AMAZON as decimal(19,4),",
+						"          {AMAZON InstruNo} as string,",
+						"          {AMAZON Instrudate} as timestamp,",
+						"          {Bajaj Finance} as decimal(19,4),",
+						"          {Bajaj Finance InstruNo} as string,",
+						"          {Bajaj Finance Instrudate} as timestamp,",
+						"          Cheque as decimal(19,4),",
+						"          {Cheque InstruNo} as string,",
+						"          {Cheque Instrudate} as timestamp,",
+						"          {Pinelab  Credit Card / Debit Card} as decimal(19,4),",
+						"          {Pinelab  Credit Card / Debit Card InstruNo} as string,",
+						"          {Pinelab  Credit Card / Debit Card Instrudate} as timestamp,",
+						"          {Credit Note} as decimal(19,4),",
+						"          {Credit Note InstruNo} as string,",
+						"          {Credit Note Instrudate} as timestamp,",
+						"          {Hdb Finance} as decimal(19,4),",
+						"          {Hdb Finance InstruNo} as string,",
+						"          {Hdb Finance Instrudate} as timestamp,",
+						"          {Hdfc Finance} as decimal(19,4),",
+						"          {Hdfc Finance InstruNo} as string,",
+						"          {Hdfc Finance Instrudate} as timestamp,",
+						"          {Home Credit Finance} as decimal(19,4),",
+						"          {Home Credit Finance InstruNo} as string,",
+						"          {Home Credit Finance Instrudate} as timestamp,",
+						"          {Online Payment Transfer} as decimal(19,4),",
+						"          {Online Payment Transfer InstruNo} as string,",
+						"          {Online Payment Transfer Instrudate} as timestamp,",
+						"          {Samsung Sure Finance} as decimal(19,4),",
+						"          {Samsung Sure Finance InstruNo} as string,",
+						"          {Samsung Sure Finance Instrudate} as timestamp,",
+						"          {Tvs Finance} as decimal(19,4),",
+						"          {Tvs Finance InstruNo} as string,",
+						"          {Tvs Finance Instrudate} as timestamp,",
+						"          {Icici Finance} as decimal(19,4),",
+						"          {Icici Finance InstruNo} as string,",
+						"          {Icici Finance Instrudate} as timestamp,",
+						"          {Bharatpe Payment} as decimal(19,4),",
+						"          {Bharatpe Payment InstruNo} as string,",
+						"          {Bharatpe Payment Instrudate} as timestamp,",
+						"          {Idfc First Finance} as decimal(19,4),",
+						"          {Idfc First Finance InstruNo} as string,",
+						"          {Idfc First Finance Instrudate} as timestamp,",
+						"          {Upgrad Program} as decimal(19,4),",
+						"          {Upgrad Program InstruNo} as string,",
+						"          {Upgrad Program Instrudate} as timestamp,",
+						"          {MAHINDRA FINANCE} as decimal(19,4),",
+						"          {MAHINDRA FINANCE InstruNo} as string,",
+						"          {MAHINDRA FINANCE Instrudate} as timestamp,",
+						"          {Paytm  Credit Card / Debit Card} as decimal(19,4),",
+						"          {Paytm  Credit Card / Debit Card InstruNo} as string,",
+						"          {Paytm  Credit Card / Debit Card Instrudate} as timestamp,",
+						"          {ZEST MONEY FINANCE} as decimal(19,4),",
+						"          {ZEST MONEY FINANCE InstruNo} as string,",
+						"          {ZEST MONEY FINANCE Instrudate} as timestamp,",
+						"          {Innoviti  Credit Card / Debit Card} as decimal(19,4),",
+						"          {Innoviti  Credit Card / Debit Card InstruNo} as string,",
+						"          {Innoviti  Credit Card / Debit Card Instrudate} as timestamp,",
+						"          {S S K  APPLIENCES} as decimal(19,4),",
+						"          {S S K  APPLIENCES InstruNo} as string,",
+						"          {S S K  APPLIENCES Instrudate} as timestamp,",
+						"          Flipkart as decimal(19,4),",
+						"          {Flipkart InstruNo} as string,",
+						"          {Flipkart Instrudate} as timestamp,",
+						"          {Order Id} as decimal(19,4),",
+						"          {Order Id InstruNo} as string,",
+						"          {Order Id Instrudate} as timestamp,",
+						"          {Reference Number} as decimal(19,4),",
+						"          {Reference Number InstruNo} as string,",
+						"          {Reference Number Instrudate} as timestamp,",
+						"          {Flipkart Commission Charges} as decimal(19,4),",
+						"          {Flipkart Commission Charges InstruNo} as string,",
+						"          {Flipkart Commission Charges Instrudate} as timestamp,",
+						"          {Amazon Commission Charges} as decimal(19,4),",
+						"          {Amazon Commission Charges InstruNo} as string,",
+						"          {Amazon Commission Charges Instrudate} as timestamp,",
+						"          {Tcs And Tds} as decimal(19,4),",
+						"          {Tcs And Tds InstruNo} as string,",
+						"          {Tcs And Tds Instrudate} as timestamp,",
+						"          {In Account} as decimal(19,4),",
+						"          {In Account InstruNo} as string,",
+						"          {In Account Instrudate} as timestamp,",
+						"          {Bajaj Credit Card / Debit Card} as decimal(19,4),",
+						"          {Bajaj Credit Card / Debit Card InstruNo} as string,",
+						"          {Bajaj Credit Card / Debit Card Instrudate} as timestamp,",
+						"          {Chola Finance} as decimal(19,4),",
+						"          {Chola Finance InstruNo} as string,",
+						"          {Chola Finance Instrudate} as timestamp,",
+						"          {Kotak Mahindra Bank Finance} as decimal(19,4),",
+						"          {Kotak Mahindra Bank Finance InstruNo} as string,",
+						"          {Kotak Mahindra Bank Finance Instrudate} as timestamp,",
+						"          {Gift Account} as decimal(19,4),",
+						"          {Gift Account InstruNo} as string,",
+						"          {Gift Account Instrudate} as timestamp,",
+						"          {Tcs Gst} as decimal(19,4),",
+						"          {Tcs Gst InstruNo} as string,",
+						"          {Tcs Gst Instrudate} as timestamp,",
+						"          {Tds Income Tax} as decimal(19,4),",
+						"          {Tds Income Tax InstruNo} as string,",
+						"          {Tds Income Tax Instrudate} as timestamp,",
+						"          {Flipkart Invoice No} as decimal(19,4),",
+						"          {Flipkart Invoice No InstruNo} as string,",
+						"          {Flipkart Invoice No Instrudate} as timestamp,",
+						"          {Amazon Invoice No} as decimal(19,4),",
+						"          {Amazon Invoice No InstruNo} as string,",
+						"          {Amazon Invoice No Instrudate} as timestamp,",
+						"          {Benow Payment} as decimal(19,4),",
+						"          {Benow Payment InstruNo} as string,",
+						"          {Benow Payment Instrudate} as timestamp,",
+						"          {Poonawalla Fincorp Limited} as decimal(19,4),",
+						"          {Poonawalla Fincorp Limited InstruNo} as string,",
+						"          {Poonawalla Fincorp Limited Instrudate} as timestamp,",
+						"          Advance as decimal(19,4),",
+						"          {Advance InstruNo} as string,",
+						"          {Advance Instrudate} as timestamp,",
+						"          Amezon1 as decimal(19,4),",
+						"          {Amezon1 InstruNo} as string,",
+						"          {Amezon1 Instrudate} as timestamp,",
+						"          {Baghbahar Pvt Ltd} as decimal(19,4),",
+						"          {Baghbahar Pvt Ltd InstruNo} as string,",
+						"          {Baghbahar Pvt Ltd Instrudate} as timestamp,",
+						"          {Bajaj Finance Online} as decimal(19,4),",
+						"          {Bajaj Finance Online InstruNo} as string,",
+						"          {Bajaj Finance Online Instrudate} as timestamp,",
+						"          {INSTANT CASHBACK} as decimal(19,4),",
+						"          {INSTANT CASHBACK InstruNo} as string,",
+						"          {INSTANT CASHBACK Instrudate} as timestamp,",
+						"          {Manik Online Website} as decimal(19,4),",
+						"          {Manik Online Website InstruNo} as string,",
+						"          {Manik Online Website Instrudate} as timestamp,",
+						"          {Old Buyback} as decimal(19,4),",
+						"          {Old Buyback InstruNo} as string,",
+						"          {Old Buyback Instrudate} as timestamp",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: (\"select * from [dbo].[Historic_Mastersales]\"),",
+						"     format: 'query') ~> CraftAISQLMasterSales",
+						"CraftAISQLMasterSales derive(BharatPayUTR = substring({Bharatpe Payment InstruNo}, 7)) ~> BharatPayUTR",
+						"BharatPayUTR sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     recreate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> MasterSalesSink"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ManikSQLServerProd')]",
+				"[concat(variables('factoryId'), '/datasets/Historic_Mastersales')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Historic_Mastersales')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Historic_Mastersales",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "select * from [dbo].[Historic_Mastersales] where Date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"preCopyScript": {
+									"value": "delete from [dbo].[Historic_Mastersales] where Date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"type": "Expression"
+								},
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ManikSQLServerProd",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Historic_Mastersales",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "MasterSalesDF",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "HistoricMasterSalesDF",
+								"type": "DataFlowReference",
+								"parameters": {
+									"today_date": "toString( currentDate('IST'))"
+								},
+								"datasetParameters": {
+									"CraftAISQLMasterSales": {},
+									"MasterSalesSink": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-12-26T16:15:27Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ManikSQLServerProd')]",
+				"[concat(variables('factoryId'), '/datasets/Historic_Mastersales')]",
+				"[concat(variables('factoryId'), '/dataflows/HistoricMasterSalesDF')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/One_Time_Load')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "HistoricInterBranch",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "select * from [dbo].[HistoricInterBranch] ",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ManikSQLServerProd",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "HistoricInterBranch",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "HistoricPurchaseData",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "select * from [dbo].[HistoricPurchaseData] ",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ManikSQLServerProd",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "HistoricPurchaseData",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "HistoricSalesData",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": "select * from [dbo].[HistoricSalesData]",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ManikSQLServerProd",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "HistoricSalesData",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "HistoricStock",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "select * from [dbo].[HistoricStock] ",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ManikSQLServerProd",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "HistoricStock",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Historic_Mastersales",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "select * from [dbo].Historic_Mastersales",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlServerSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ManikSQLServerProd",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Historic_Mastersales",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "MasterSalesDF",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "HistoricMasterSalesDF_OneTime",
+								"type": "DataFlowReference",
+								"parameters": {
+									"today_date": "toString( currentDate('IST'))"
+								},
+								"datasetParameters": {
+									"CraftAISQLMasterSales": {},
+									"MasterSalesSink": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-12-26T16:19:10Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ManikSQLServerProd')]",
+				"[concat(variables('factoryId'), '/datasets/HistoricInterBranch')]",
+				"[concat(variables('factoryId'), '/datasets/HistoricPurchaseData')]",
+				"[concat(variables('factoryId'), '/datasets/HistoricSalesData')]",
+				"[concat(variables('factoryId'), '/datasets/HistoricStock')]",
+				"[concat(variables('factoryId'), '/datasets/Historic_Mastersales')]",
+				"[concat(variables('factoryId'), '/dataflows/HistoricMasterSalesDF_OneTime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/halfhourlytrigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "HistoricInterBranch",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "HistoricPurchaseData",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "HistoricStock",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "HistoricSalesData",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "Historic_Mastersales",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 30,
+						"startTime": "2025-09-21T16:26:00",
+						"timeZone": "India Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/HistoricInterBranch')]",
+				"[concat(variables('factoryId'), '/pipelines/HistoricPurchaseData')]",
+				"[concat(variables('factoryId'), '/pipelines/HistoricStock')]",
+				"[concat(variables('factoryId'), '/pipelines/HistoricSalesData')]",
+				"[concat(variables('factoryId'), '/pipelines/Historic_Mastersales')]"
+			]
+		}
+	]
+}

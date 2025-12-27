@@ -1,0 +1,112 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "craftaiadf"
+		},
+		"BharatPay_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'BharatPay'"
+		},
+		"CraftaiManikSQL_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'CraftaiManikSQL'"
+		},
+		"ManikSqlServer_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ManikSqlServer'"
+		},
+		"BharatPay_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://storageforrecon.dfs.core.windows.net/"
+		},
+		"CraftaiManikSQL_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "135.235.162.172"
+		},
+		"CraftaiManikSQL_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "ManikMobile"
+		},
+		"CraftaiManikSQL_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sql_admin"
+		},
+		"ManikSqlServer_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "125.20.207.170"
+		},
+		"ManikSqlServer_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Upplus"
+		},
+		"ManikSqlServer_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "Historic"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "craftaiadf_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"BharatPay_accountKey": {
+						"value": "[parameters('BharatPay_accountKey')]"
+					},
+					"CraftaiManikSQL_password": {
+						"value": "[parameters('CraftaiManikSQL_password')]"
+					},
+					"ManikSqlServer_password": {
+						"value": "[parameters('ManikSqlServer_password')]"
+					},
+					"BharatPay_properties_typeProperties_url": {
+						"value": "[parameters('BharatPay_properties_typeProperties_url')]"
+					},
+					"CraftaiManikSQL_properties_typeProperties_server": {
+						"value": "[parameters('CraftaiManikSQL_properties_typeProperties_server')]"
+					},
+					"CraftaiManikSQL_properties_typeProperties_database": {
+						"value": "[parameters('CraftaiManikSQL_properties_typeProperties_database')]"
+					},
+					"CraftaiManikSQL_properties_typeProperties_userName": {
+						"value": "[parameters('CraftaiManikSQL_properties_typeProperties_userName')]"
+					},
+					"ManikSqlServer_properties_typeProperties_server": {
+						"value": "[parameters('ManikSqlServer_properties_typeProperties_server')]"
+					},
+					"ManikSqlServer_properties_typeProperties_database": {
+						"value": "[parameters('ManikSqlServer_properties_typeProperties_database')]"
+					},
+					"ManikSqlServer_properties_typeProperties_userName": {
+						"value": "[parameters('ManikSqlServer_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
