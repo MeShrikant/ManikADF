@@ -1,0 +1,39 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "df-for-future"
+		},
+		"BharatPay_accountKey": {
+			"value": ""
+		},
+		"CraftaiManikSQL_password": {
+			"value": ""
+		},
+		"ManikSqlServer_password": {
+			"value": ""
+		},
+		"BharatPay_properties_typeProperties_url": {
+			"value": "https://storageforrecon.dfs.core.windows.net/"
+		},
+		"CraftaiManikSQL_properties_typeProperties_server": {
+			"value": "135.235.162.172"
+		},
+		"CraftaiManikSQL_properties_typeProperties_database": {
+			"value": "ManikMobile"
+		},
+		"CraftaiManikSQL_properties_typeProperties_userName": {
+			"value": "sql_admin"
+		},
+		"ManikSqlServer_properties_typeProperties_server": {
+			"value": "125.20.207.170"
+		},
+		"ManikSqlServer_properties_typeProperties_database": {
+			"value": "Upplus"
+		},
+		"ManikSqlServer_properties_typeProperties_userName": {
+			"value": "Historic"
+		}
+	}
+}
