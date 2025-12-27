@@ -1,5 +1,5 @@
 {
-	"name": "HistoricMasterSalesDF_OneTime",
+	"name": "HistoricMasterSalesDF",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -201,8 +201,8 @@
 				"     insertable:true,",
 				"     updateable:false,",
 				"     upsertable:false,",
-				"     recreate:true,",
 				"     format: 'table',",
+				"     preSQLs:[(concat(\"Delete from [dbo].[Historic_Mastersales] where date = '\",$today_date , \"'\"))],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> MasterSalesSink",
 				"BharatPayUTR sink(allowSchemaDrift: true,",
@@ -211,8 +211,8 @@
 				"     insertable:true,",
 				"     updateable:false,",
 				"     upsertable:false,",
-				"     recreate:true,",
 				"     format: 'table',",
+				"     preSQLs:[(concat(\"Delete from [dbo].[RetailwareData] where date = '\",$today_date , \"'\"))],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> RetailwareData"
 			]
