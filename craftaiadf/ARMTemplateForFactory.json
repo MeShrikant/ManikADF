@@ -355,64 +355,6 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Historic_Mastersales",
-						"type": "Copy",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"sqlReaderQuery": {
-									"value": "select * from [dbo].[Historic_Mastersales] where Date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "SqlServerSink",
-								"preCopyScript": {
-									"value": "delete from [dbo].[Historic_Mastersales] where Date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
-									"type": "Expression"
-								},
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ManikSQLServerProd",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "Historic_Mastersales",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
 						"name": "MasterSalesDF",
 						"type": "ExecuteDataFlow",
 						"dependsOn": [],
@@ -438,7 +380,7 @@
 							},
 							"staging": {},
 							"compute": {
-								"coreCount": 8,
+								"coreCount": 16,
 								"computeType": "General"
 							},
 							"traceLevel": "Fine"
@@ -452,8 +394,6 @@
 				"lastPublishTime": "2025-12-26T16:15:27Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ManikSQLServerProd')]",
-				"[concat(variables('factoryId'), '/datasets/Historic_Mastersales')]",
 				"[concat(variables('factoryId'), '/dataflows/HistoricMasterSalesDF')]"
 			]
 		},
