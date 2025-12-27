@@ -1,0 +1,17 @@
+{
+	"name": "HistoricInterBranch",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CraftaiManikSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "HistoricInterBranch"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

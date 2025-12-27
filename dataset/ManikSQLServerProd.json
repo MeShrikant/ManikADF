@@ -1,0 +1,86 @@
+{
+	"name": "ManikSQLServerProd",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ManikSqlServer",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "Date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Voucherno",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "User",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Productid",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "ProductName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Qty",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 3
+			},
+			{
+				"name": "Amount",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Category",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SubCategory",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Brand",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Model",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Color",
+				"type": "nvarchar"
+			},
+			{
+				"name": "IMEINo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FromBranch",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ToBranch",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Historic_Mastersales"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

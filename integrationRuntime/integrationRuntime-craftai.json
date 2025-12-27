@@ -1,0 +1,6 @@
+{
+	"name": "integrationRuntime-craftai",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}

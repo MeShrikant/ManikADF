@@ -1,0 +1,17 @@
+{
+	"name": "HistoricPurchaseData",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CraftaiManikSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "HistoricPurchaseData"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,17 @@
+{
+	"name": "Historic_Mastersales",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CraftaiManikSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Historic_Mastersales"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

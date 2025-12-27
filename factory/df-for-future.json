@@ -1,0 +1,9 @@
+{
+	"name": "df-for-future",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "cdcf1029-980c-4b96-a44a-eb4def2503a6",
+		"tenantId": "16b3c013-d300-468d-ac64-7eda0820b6d3"
+	}
+}
