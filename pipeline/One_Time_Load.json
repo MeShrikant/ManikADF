@@ -228,7 +228,7 @@
 						"referenceName": "HistoricMasterSalesDF_OneTime",
 						"type": "DataFlowReference",
 						"parameters": {
-							"today_date": "toString( currentDate('IST'))"
+							"today_date": "toString(currentDate('IST'))"
 						}
 					},
 					"compute": {
