@@ -1,5 +1,5 @@
 {
-	"name": "HistoricMasterSalesDF_OneTime",
+	"name": "bharatpay_oneTime",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
