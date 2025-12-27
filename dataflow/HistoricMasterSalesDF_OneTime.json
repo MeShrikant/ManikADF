@@ -32,9 +32,6 @@
 				{
 					"name": "BharatPayUTR",
 					"description": "Bharatpay UTR"
-				},
-				{
-					"name": "flowlet1"
 				}
 			],
 			"scriptLines": [
@@ -198,8 +195,7 @@
 				"     query: (\"select * from [dbo].[Historic_Mastersales]\"),",
 				"     format: 'query') ~> CraftAISQLMasterSales",
 				"CraftAISQLMasterSales derive(BharatPayUTR = substring({Bharatpe Payment InstruNo}, 7)) ~> BharatPayUTR",
-				"BharatPayUTR compose(composition: 'undefined') ~> flowlet1@()",
-				"flowlet1 sink(allowSchemaDrift: true,",
+				"BharatPayUTR sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
