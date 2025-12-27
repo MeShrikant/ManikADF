@@ -347,10 +347,28 @@
 				"     insertable:true,",
 				"     updateable:false,",
 				"     upsertable:false,",
+				"     truncate:true,",
 				"     format: 'table',",
-				"     preSQLs:[(concat(\"Delete from [dbo].[[BharatpayRetailwareData] where date = '\",$today_date , \"'\"))],",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> BharatpeRetailware"
+				"     mapColumn(",
+				"          RetailwareID,",
+				"          BillNo,",
+				"          Date,",
+				"          Time,",
+				"          Customer,",
+				"          NetAmount,",
+				"          BharatpePAmt,",
+				"          InstrNo,",
+				"          InstruDate,",
+				"          InstruTime,",
+				"          BranchCode,",
+				"          ChqStatusDate,",
+				"          CustPhno,",
+				"          UserName,",
+				"          Narration,",
+				"          Comments,",
+				"          CreatedAt,",
+				"          UpdatedAt",
+				"     )) ~> BharatpeRetailware"
 			]
 		}
 	}
