@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ManikSqlServer'"
 		},
+		"CraftManaikTxUTR_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'CraftManaikTxUTR'"
+		},
 		"BharatPay_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://storageforrecon.dfs.core.windows.net/"
@@ -46,6 +50,18 @@
 		"ManikSqlServer_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "Historic"
+		},
+		"CraftManaikTxUTR_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "135.235.162.172"
+		},
+		"CraftManaikTxUTR_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "CraftTraxUTR"
+		},
+		"CraftManaikTxUTR_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sql_admin"
 		}
 	},
 	"variables": {
@@ -141,6 +157,28 @@
 			"properties": {
 				"type": "SelfHosted",
 				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CraftManaikTxUTR')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"server": "[parameters('CraftManaikTxUTR_properties_typeProperties_server')]",
+					"database": "[parameters('CraftManaikTxUTR_properties_typeProperties_database')]",
+					"encrypt": "optional",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('CraftManaikTxUTR_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('CraftManaikTxUTR_password')]"
+					}
+				}
 			},
 			"dependsOn": []
 		},
@@ -707,6 +745,27 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/CraftAIManikTxUTR')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CraftManaikTxUTR",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "RetailwareData"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CraftManaikTxUTR')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/HistoricInterBranch')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1025,6 +1084,13 @@
 								"type": "DatasetReference"
 							},
 							"name": "MasterSalesSink"
+						},
+						{
+							"dataset": {
+								"referenceName": "CraftAIManikTxUTR",
+								"type": "DatasetReference"
+							},
+							"name": "TxUTRSink"
 						}
 					],
 					"transformations": [
@@ -1201,14 +1267,26 @@
 						"     updateable:false,",
 						"     upsertable:false,",
 						"     format: 'table',",
+						"     preSQLs:[(concat(\"Delete from [dbo].[Historic_Mastersales] where date = '\",$today_date , \"'\"))],",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> MasterSalesSink"
+						"     skipDuplicateMapOutputs: true) ~> MasterSalesSink",
+						"BharatPayUTR sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     preSQLs:[(concat(\"Delete from [dbo].[RetailwareData] where date = '\",$today_date , \"'\"))],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> TxUTRSink"
 					]
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ManikSQLServerProd')]",
-				"[concat(variables('factoryId'), '/datasets/Historic_Mastersales')]"
+				"[concat(variables('factoryId'), '/datasets/Historic_Mastersales')]",
+				"[concat(variables('factoryId'), '/datasets/CraftAIManikTxUTR')]"
 			]
 		},
 		{
@@ -1234,6 +1312,13 @@
 								"type": "DatasetReference"
 							},
 							"name": "MasterSalesSink"
+						},
+						{
+							"dataset": {
+								"referenceName": "CraftAIManikTxUTR",
+								"type": "DatasetReference"
+							},
+							"name": "RetailwareData"
 						}
 					],
 					"transformations": [
@@ -1412,13 +1497,24 @@
 						"     recreate:true,",
 						"     format: 'table',",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> MasterSalesSink"
+						"     skipDuplicateMapOutputs: true) ~> MasterSalesSink",
+						"BharatPayUTR sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     recreate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> RetailwareData"
 					]
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ManikSQLServerProd')]",
-				"[concat(variables('factoryId'), '/datasets/Historic_Mastersales')]"
+				"[concat(variables('factoryId'), '/datasets/Historic_Mastersales')]",
+				"[concat(variables('factoryId'), '/datasets/CraftAIManikTxUTR')]"
 			]
 		},
 		{
@@ -1448,7 +1544,8 @@
 								},
 								"datasetParameters": {
 									"CraftAISQLMasterSales": {},
-									"MasterSalesSink": {}
+									"MasterSalesSink": {},
+									"TxUTRSink": {}
 								}
 							},
 							"staging": {},
@@ -1468,339 +1565,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/HistoricMasterSalesDF')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/One_Time_Load')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "HistoricInterBranch",
-						"type": "Copy",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"sqlReaderQuery": {
-									"value": "select * from [dbo].[HistoricInterBranch] ",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "SqlServerSink",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false,
-								"tableOption": "autoCreate"
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ManikSQLServerProd",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "HistoricInterBranch",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "HistoricPurchaseData",
-						"type": "Copy",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"sqlReaderQuery": {
-									"value": "select * from [dbo].[HistoricPurchaseData] ",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "SqlServerSink",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false,
-								"tableOption": "autoCreate"
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ManikSQLServerProd",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "HistoricPurchaseData",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "HistoricSalesData",
-						"type": "Copy",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"sqlReaderQuery": "select * from [dbo].[HistoricSalesData]",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "SqlServerSink",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false,
-								"tableOption": "autoCreate"
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ManikSQLServerProd",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "HistoricSalesData",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "HistoricStock",
-						"type": "Copy",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"sqlReaderQuery": {
-									"value": "select * from [dbo].[HistoricStock] ",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "SqlServerSink",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false,
-								"tableOption": "autoCreate"
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ManikSQLServerProd",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "HistoricStock",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "MasterSalesDF",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 60,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "HistoricMasterSalesDF_OneTime",
-								"type": "DataFlowReference",
-								"parameters": {
-									"today_date": "toString( currentDate('IST'))"
-								},
-								"datasetParameters": {
-									"CraftAISQLMasterSales": {},
-									"MasterSalesSink": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 16,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2025-12-26T16:19:10Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ManikSQLServerProd')]",
-				"[concat(variables('factoryId'), '/datasets/HistoricInterBranch')]",
-				"[concat(variables('factoryId'), '/datasets/HistoricPurchaseData')]",
-				"[concat(variables('factoryId'), '/datasets/HistoricSalesData')]",
-				"[concat(variables('factoryId'), '/datasets/HistoricStock')]",
-				"[concat(variables('factoryId'), '/dataflows/HistoricMasterSalesDF_OneTime')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/halfhourlytrigger')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "HistoricInterBranch",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "HistoricPurchaseData",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "HistoricStock",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "HistoricSalesData",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "Historic_Mastersales",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Minute",
-						"interval": 30,
-						"startTime": "2025-09-21T16:26:00",
-						"timeZone": "India Standard Time"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/HistoricInterBranch')]",
-				"[concat(variables('factoryId'), '/pipelines/HistoricPurchaseData')]",
-				"[concat(variables('factoryId'), '/pipelines/HistoricStock')]",
-				"[concat(variables('factoryId'), '/pipelines/HistoricSalesData')]",
-				"[concat(variables('factoryId'), '/pipelines/Historic_Mastersales')]"
 			]
 		}
 	]

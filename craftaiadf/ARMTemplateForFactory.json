@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ManikSqlServer'"
 		},
+		"CraftManaikTxUTR_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'CraftManaikTxUTR'"
+		},
 		"BharatPay_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://storageforrecon.dfs.core.windows.net/"
@@ -46,6 +50,18 @@
 		"ManikSqlServer_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "Historic"
+		},
+		"CraftManaikTxUTR_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "135.235.162.172"
+		},
+		"CraftManaikTxUTR_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "CraftTraxUTR"
+		},
+		"CraftManaikTxUTR_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sql_admin"
 		}
 	},
 	"variables": {
@@ -375,7 +391,8 @@
 								},
 								"datasetParameters": {
 									"CraftAISQLMasterSales": {},
-									"MasterSalesSink": {}
+									"MasterSalesSink": {},
+									"TxUTRSink": {}
 								}
 							},
 							"staging": {},
@@ -641,7 +658,8 @@
 								},
 								"datasetParameters": {
 									"CraftAISQLMasterSales": {},
-									"MasterSalesSink": {}
+									"MasterSalesSink": {},
+									"RetailwareData": {}
 								}
 							},
 							"staging": {},
@@ -1407,6 +1425,13 @@
 								"type": "DatasetReference"
 							},
 							"name": "MasterSalesSink"
+						},
+						{
+							"dataset": {
+								"referenceName": "CraftAIManikTxUTR",
+								"type": "DatasetReference"
+							},
+							"name": "TxUTRSink"
 						}
 					],
 					"transformations": [
@@ -1583,14 +1608,26 @@
 						"     updateable:false,",
 						"     upsertable:false,",
 						"     format: 'table',",
+						"     preSQLs:[(concat(\"Delete from [dbo].[Historic_Mastersales] where date = '\",$today_date , \"'\"))],",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> MasterSalesSink"
+						"     skipDuplicateMapOutputs: true) ~> MasterSalesSink",
+						"BharatPayUTR sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     preSQLs:[(concat(\"Delete from [dbo].[RetailwareData] where date = '\",$today_date , \"'\"))],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> TxUTRSink"
 					]
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ManikSQLServerProd')]",
-				"[concat(variables('factoryId'), '/datasets/Historic_Mastersales')]"
+				"[concat(variables('factoryId'), '/datasets/Historic_Mastersales')]",
+				"[concat(variables('factoryId'), '/datasets/CraftAIManikTxUTR')]"
 			]
 		},
 		{
@@ -1616,6 +1653,13 @@
 								"type": "DatasetReference"
 							},
 							"name": "MasterSalesSink"
+						},
+						{
+							"dataset": {
+								"referenceName": "CraftAIManikTxUTR",
+								"type": "DatasetReference"
+							},
+							"name": "RetailwareData"
 						}
 					],
 					"transformations": [
@@ -1794,13 +1838,67 @@
 						"     recreate:true,",
 						"     format: 'table',",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> MasterSalesSink"
+						"     skipDuplicateMapOutputs: true) ~> MasterSalesSink",
+						"BharatPayUTR sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     recreate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> RetailwareData"
 					]
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ManikSQLServerProd')]",
-				"[concat(variables('factoryId'), '/datasets/Historic_Mastersales')]"
+				"[concat(variables('factoryId'), '/datasets/Historic_Mastersales')]",
+				"[concat(variables('factoryId'), '/datasets/CraftAIManikTxUTR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CraftManaikTxUTR')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"server": "[parameters('CraftManaikTxUTR_properties_typeProperties_server')]",
+					"database": "[parameters('CraftManaikTxUTR_properties_typeProperties_database')]",
+					"encrypt": "optional",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('CraftManaikTxUTR_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('CraftManaikTxUTR_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CraftAIManikTxUTR')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CraftManaikTxUTR",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "RetailwareData"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CraftManaikTxUTR')]"
 			]
 		}
 	]

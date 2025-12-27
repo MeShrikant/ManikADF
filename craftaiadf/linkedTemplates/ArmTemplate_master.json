@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ManikSqlServer'"
 		},
+		"CraftManaikTxUTR_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'CraftManaikTxUTR'"
+		},
 		"BharatPay_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://storageforrecon.dfs.core.windows.net/"
@@ -46,6 +50,18 @@
 		"ManikSqlServer_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "Historic"
+		},
+		"CraftManaikTxUTR_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "135.235.162.172"
+		},
+		"CraftManaikTxUTR_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "CraftTraxUTR"
+		},
+		"CraftManaikTxUTR_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sql_admin"
 		},
 		"containerUri": {
 			"type": "string",
@@ -83,6 +99,9 @@
 					"ManikSqlServer_password": {
 						"value": "[parameters('ManikSqlServer_password')]"
 					},
+					"CraftManaikTxUTR_password": {
+						"value": "[parameters('CraftManaikTxUTR_password')]"
+					},
 					"BharatPay_properties_typeProperties_url": {
 						"value": "[parameters('BharatPay_properties_typeProperties_url')]"
 					},
@@ -103,10 +122,39 @@
 					},
 					"ManikSqlServer_properties_typeProperties_userName": {
 						"value": "[parameters('ManikSqlServer_properties_typeProperties_userName')]"
+					},
+					"CraftManaikTxUTR_properties_typeProperties_server": {
+						"value": "[parameters('CraftManaikTxUTR_properties_typeProperties_server')]"
+					},
+					"CraftManaikTxUTR_properties_typeProperties_database": {
+						"value": "[parameters('CraftManaikTxUTR_properties_typeProperties_database')]"
+					},
+					"CraftManaikTxUTR_properties_typeProperties_userName": {
+						"value": "[parameters('CraftManaikTxUTR_properties_typeProperties_userName')]"
 					}
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "craftaiadf_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'craftaiadf_ArmTemplate_0')]"
+			]
 		}
 	]
 }
