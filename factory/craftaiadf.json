@@ -1,0 +1,9 @@
+{
+	"name": "craftaiadf",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "d0a70d21-792d-425f-84b2-9c019bb28fd2",
+		"tenantId": "165b4233-5531-47c0-af60-9c373a08a658"
+	}
+}
