@@ -19,12 +19,22 @@
 						"type": "DatasetReference"
 					},
 					"name": "MasterSalesSink"
+				},
+				{
+					"dataset": {
+						"referenceName": "CraftAIManikTxUTR",
+						"type": "DatasetReference"
+					},
+					"name": "TxUTRSink"
 				}
 			],
 			"transformations": [
 				{
 					"name": "BharatPayUTR",
 					"description": "Bharatpay UTR"
+				},
+				{
+					"name": "flowlet1"
 				}
 			],
 			"scriptLines": [
@@ -188,6 +198,17 @@
 				"     query: (concat(\"select * from [dbo].[Historic_Mastersales] where date = '\",$today_date , \"'\")),",
 				"     format: 'query') ~> CraftAISQLMasterSales",
 				"CraftAISQLMasterSales derive(BharatPayUTR = substring({Bharatpe Payment InstruNo}, 7)) ~> BharatPayUTR",
+				"BharatPayUTR compose(composition: 'undefined') ~> flowlet1@()",
+				"flowlet1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     preSQLs:[(concat(\"Delete from [dbo].[Historic_Mastersales] where date = '\",$today_date , \"'\"))],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> MasterSalesSink",
 				"BharatPayUTR sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
@@ -195,8 +216,9 @@
 				"     updateable:false,",
 				"     upsertable:false,",
 				"     format: 'table',",
+				"     preSQLs:[(concat(\"Delete from [dbo].[RetailwareData] where date = '\",$today_date , \"'\"))],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> MasterSalesSink"
+				"     skipDuplicateMapOutputs: true) ~> TxUTRSink"
 			]
 		}
 	}
