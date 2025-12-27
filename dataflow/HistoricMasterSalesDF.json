@@ -10,6 +10,14 @@
 						"type": "DatasetReference"
 					},
 					"name": "CraftAISQLMasterSales"
+				},
+				{
+					"dataset": {
+						"referenceName": "CraftAIManikTxUTR",
+						"type": "DatasetReference"
+					},
+					"name": "craftsqlbrach",
+					"description": "data"
 				}
 			],
 			"sinks": [
@@ -26,12 +34,46 @@
 						"type": "DatasetReference"
 					},
 					"name": "TxUTRSink"
+				},
+				{
+					"dataset": {
+						"referenceName": "CraftAIManikTxUTR",
+						"type": "DatasetReference"
+					},
+					"name": "BharatpeRetailware"
 				}
 			],
 			"transformations": [
 				{
 					"name": "BharatPayUTR",
 					"description": "Bharatpay UTR"
+				},
+				{
+					"name": "Bhartpeonly",
+					"description": "Add expression for the filte"
+				},
+				{
+					"name": "Bharatpay1",
+					"description": "creating bhartpay_only table"
+				},
+				{
+					"name": "Bhartpaycolumnrename"
+				},
+				{
+					"name": "tempcol",
+					"description": "Creating the column BranchKey'"
+				},
+				{
+					"name": "brachcodegenerator"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "retaiwareid"
+				},
+				{
+					"name": "FinalBhartpedata"
 				}
 			],
 			"scriptLines": [
@@ -194,7 +236,91 @@
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     query: (concat(\"select * from [dbo].[Historic_Mastersales] where date = '\",$today_date , \"'\")),",
 				"     format: 'query') ~> CraftAISQLMasterSales",
+				"source(output(",
+				"          BranchCode as integer,",
+				"          BranchName as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: (concat(\"SELECT BranchCode ,BranchName  FROM dbo.BranchMaster\")),",
+				"     format: 'query') ~> craftsqlbrach",
 				"CraftAISQLMasterSales derive(BharatPayUTR = substring({Bharatpe Payment InstruNo}, 7)) ~> BharatPayUTR",
+				"BharatPayUTR filter({Bharatpe Payment InstruNo} !='0') ~> Bhartpeonly",
+				"Bhartpaycolumnrename derive(InstruTime = Time,",
+				"          ChqStatusDate = toTimestamp(null()),",
+				"          CustPhno = toString(null()),",
+				"          UserName = toString(null()),",
+				"          Narration = toString(null()),",
+				"          Comments = toString(null()),",
+				"          CreatedAt = toTimestamp(null()),",
+				"          UpdatedAt = toTimestamp(null()),",
+				"          BranchKey = upper(trim(replace(Branch, '.', '')))) ~> Bharatpay1",
+				"Bhartpeonly select(mapColumn(",
+				"          Branch,",
+				"          BillNo = voucherno,",
+				"          Date = date,",
+				"          Time,",
+				"          Customer = customer,",
+				"          NetAmount = Netamount,",
+				"          BharatpePAmt = {Bharatpe Payment},",
+				"          {Bharatpe Payment InstruNo1} = {Bharatpe Payment InstruNo},",
+				"          InstruDate = {Bharatpe Payment Instrudate},",
+				"          InstrNo = BharatPayUTR",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> Bhartpaycolumnrename",
+				"craftsqlbrach derive(BranchKey = upper(trim(replace(BranchName, '.', '')))) ~> tempcol",
+				"Bharatpay1, tempcol lookup(Bharatpay1@BranchKey == tempcol@BranchKey,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> brachcodegenerator",
+				"brachcodegenerator select(mapColumn(",
+				"          BillNo,",
+				"          Date,",
+				"          Time,",
+				"          Customer,",
+				"          NetAmount,",
+				"          BharatpePAmt,",
+				"          InstrNo,",
+				"          InstruDate,",
+				"          InstruTime,",
+				"          BranchCode,",
+				"          ChqStatusDate,",
+				"          CustPhno,",
+				"          UserName,",
+				"          Narration,",
+				"          Comments,",
+				"          CreatedAt,",
+				"          UpdatedAt",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 keyGenerate(output(RetailwareID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> retaiwareid",
+				"retaiwareid select(mapColumn(",
+				"          RetailwareID,",
+				"          BillNo,",
+				"          Date,",
+				"          Time,",
+				"          Customer,",
+				"          NetAmount,",
+				"          BharatpePAmt,",
+				"          InstrNo,",
+				"          InstruDate,",
+				"          InstruTime,",
+				"          BranchCode,",
+				"          ChqStatusDate,",
+				"          CustPhno,",
+				"          UserName,",
+				"          Narration,",
+				"          Comments,",
+				"          CreatedAt,",
+				"          UpdatedAt",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> FinalBhartpedata",
 				"BharatPayUTR sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
@@ -214,7 +340,17 @@
 				"     format: 'table',",
 				"     preSQLs:[(concat(\"Delete from [dbo].[RetailwareData] where date = '\",$today_date , \"'\"))],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> TxUTRSink"
+				"     skipDuplicateMapOutputs: true) ~> TxUTRSink",
+				"FinalBhartpedata sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     preSQLs:[(concat(\"Delete from [dbo].[[BharatpayRetailwareData] where date = '\",$today_date , \"'\"))],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> BharatpeRetailware"
 			]
 		}
 	}
