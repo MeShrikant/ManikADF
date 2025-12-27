@@ -621,61 +621,6 @@
 						]
 					},
 					{
-						"name": "Historic_Mastersales",
-						"type": "Copy",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"sqlReaderQuery": {
-									"value": "select * from [dbo].Historic_Mastersales",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "SqlServerSink",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false,
-								"tableOption": "autoCreate"
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ManikSQLServerProd",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "Historic_Mastersales",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
 						"name": "MasterSalesDF",
 						"type": "ExecuteDataFlow",
 						"dependsOn": [],
@@ -720,7 +665,6 @@
 				"[concat(variables('factoryId'), '/datasets/HistoricPurchaseData')]",
 				"[concat(variables('factoryId'), '/datasets/HistoricSalesData')]",
 				"[concat(variables('factoryId'), '/datasets/HistoricStock')]",
-				"[concat(variables('factoryId'), '/datasets/Historic_Mastersales')]",
 				"[concat(variables('factoryId'), '/dataflows/HistoricMasterSalesDF_OneTime')]"
 			]
 		},
