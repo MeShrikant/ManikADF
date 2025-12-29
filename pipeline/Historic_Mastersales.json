@@ -28,6 +28,34 @@
 					},
 					"traceLevel": "Fine"
 				}
+			},
+			{
+				"name": "Bhartpay_ETL",
+				"description": "Bharatpay Semi-Live ETL Pipeline",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "MasterSalesDF",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.01:00:00",
+					"retry": 1,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[sp_Run_BharatPe_SemiLive_Pipeline]"
+				},
+				"linkedServiceName": {
+					"referenceName": "CraftManaikTxUTR",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"annotations": [],
