@@ -8,17 +8,26 @@
 		"BharatPay_accountKey": {
 			"value": ""
 		},
+		"CraftManaikTxUTR_password": {
+			"value": ""
+		},
 		"CraftaiManikSQL_password": {
 			"value": ""
 		},
 		"ManikSqlServer_password": {
 			"value": ""
 		},
-		"CraftManaikTxUTR_password": {
-			"value": ""
-		},
 		"BharatPay_properties_typeProperties_url": {
 			"value": "https://storageforrecon.dfs.core.windows.net/"
+		},
+		"CraftManaikTxUTR_properties_typeProperties_server": {
+			"value": "135.235.162.172"
+		},
+		"CraftManaikTxUTR_properties_typeProperties_database": {
+			"value": "CraftTraxUTR"
+		},
+		"CraftManaikTxUTR_properties_typeProperties_userName": {
+			"value": "sql_admin"
 		},
 		"CraftaiManikSQL_properties_typeProperties_server": {
 			"value": "135.235.162.172"
@@ -37,15 +46,6 @@
 		},
 		"ManikSqlServer_properties_typeProperties_userName": {
 			"value": "Historic"
-		},
-		"CraftManaikTxUTR_properties_typeProperties_server": {
-			"value": "135.235.162.172"
-		},
-		"CraftManaikTxUTR_properties_typeProperties_database": {
-			"value": "CraftTraxUTR"
-		},
-		"CraftManaikTxUTR_properties_typeProperties_userName": {
-			"value": "sql_admin"
 		}
 	}
 }

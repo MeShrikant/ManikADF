@@ -249,15 +249,15 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataflow": {
-								"referenceName": "HistoricMasterSalesDF_OneTime",
+								"referenceName": "bharatpay_oneTime",
 								"type": "DataFlowReference",
 								"parameters": {
-									"today_date": "toString( currentDate('IST'))"
+									"today_date": "toString(currentDate('IST'))"
 								},
 								"datasetParameters": {
 									"CraftAISQLMasterSales": {},
-									"MasterSalesSink": {},
-									"RetailwareData": {}
+									"craftsqlbrach": {},
+									"bhatpayretaiware": {}
 								}
 							},
 							"staging": {},
@@ -325,7 +325,7 @@
 				"typeProperties": {
 					"recurrence": {
 						"frequency": "Minute",
-						"interval": 30,
+						"interval": 60,
 						"startTime": "2025-09-21T16:26:00",
 						"timeZone": "India Standard Time"
 					}
