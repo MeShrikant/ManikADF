@@ -33,7 +33,14 @@
 				"name": "Bhartpay_ETL",
 				"description": "Bharatpay Semi-Live ETL Pipeline",
 				"type": "SqlServerStoredProcedure",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "MasterSalesDF",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.01:00:00",
 					"retry": 1,
