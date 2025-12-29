@@ -16,10 +16,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "bharatpay_oneTime",
+						"referenceName": "bharatpay_oneTime_copy1",
 						"type": "DataFlowReference",
 						"parameters": {
-							"today_date": "toString( currentDate('IST'))"
+							"today_date": "toString(currentDate('IST'))"
 						}
 					},
 					"compute": {
@@ -33,14 +33,7 @@
 				"name": "Bhartpay_ETL",
 				"description": "Bharatpay Semi-Live ETL Pipeline",
 				"type": "SqlServerStoredProcedure",
-				"dependsOn": [
-					{
-						"activity": "MasterSalesDF",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.01:00:00",
 					"retry": 1,
