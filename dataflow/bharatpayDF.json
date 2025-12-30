@@ -1,5 +1,5 @@
 {
-	"name": "bharatpay_oneTime_copy1",
+	"name": "bharatpayDF",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
