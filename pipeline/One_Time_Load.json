@@ -224,6 +224,13 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"dataflow": {
+						"referenceName": "bharatpayDF",
+						"type": "DataFlowReference",
+						"parameters": {
+							"today_date": "toString(currentDate('IST'))"
+						}
+					},
 					"compute": {
 						"coreCount": 16,
 						"computeType": "General"
