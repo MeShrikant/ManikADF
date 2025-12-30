@@ -224,13 +224,6 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"dataflow": {
-						"referenceName": "bharatpay_oneTime",
-						"type": "DataFlowReference",
-						"parameters": {
-							"today_date": "toString(currentDate('IST'))"
-						}
-					},
 					"compute": {
 						"coreCount": 16,
 						"computeType": "General"
