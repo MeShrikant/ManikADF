@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "bharatpay_NEW_One_Time",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -20,7 +20,16 @@
 					"name": "MAsterdata"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "CraftAIManikTxUTR",
+						"type": "DatasetReference"
+					},
+					"name": "BharatpayNew",
+					"description": "new bharatpay data"
+				}
+			],
 			"transformations": [
 				{
 					"name": "bharatpayUTR",
@@ -232,7 +241,17 @@
 				"          {Bharatpe Payment Instrudate}",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1"
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     recreate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> BharatpayNew"
 			]
 		}
 	}
