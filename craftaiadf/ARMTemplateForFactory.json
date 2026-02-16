@@ -29,19 +29,19 @@
 		},
 		"CraftManaikTxUTR_properties_typeProperties_server": {
 			"type": "string",
-			"defaultValue": "135.235.162.172"
+			"defaultValue": "20.204.7.31"
 		},
 		"CraftManaikTxUTR_properties_typeProperties_database": {
 			"type": "string",
-			"defaultValue": "CraftTraxUTR"
+			"defaultValue": "TxUTR"
 		},
 		"CraftManaikTxUTR_properties_typeProperties_userName": {
 			"type": "string",
-			"defaultValue": "sql_admin"
+			"defaultValue": "craftai"
 		},
 		"CraftaiManikSQL_properties_typeProperties_server": {
 			"type": "string",
-			"defaultValue": "135.235.162.172"
+			"defaultValue": "20.204.7.31"
 		},
 		"CraftaiManikSQL_properties_typeProperties_database": {
 			"type": "string",
@@ -49,7 +49,7 @@
 		},
 		"CraftaiManikSQL_properties_typeProperties_userName": {
 			"type": "string",
-			"defaultValue": "sql_admin"
+			"defaultValue": "craftai"
 		},
 		"ManikSqlServer_properties_typeProperties_server": {
 			"type": "string",
@@ -680,7 +680,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataflow": {
-								"referenceName": "bharatpayDF",
+								"referenceName": "bharatpayDF_One_Time",
 								"type": "DataFlowReference",
 								"parameters": {
 									"today_date": "toString(currentDate('IST'))"
@@ -698,6 +698,33 @@
 							},
 							"traceLevel": "Fine"
 						}
+					},
+					{
+						"name": "One_time_Bharatpay",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "MasterSalesDF",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[sp_Run_BharatPe_SemiLive_Pipeline]"
+						},
+						"linkedServiceName": {
+							"referenceName": "CraftManaikTxUTR",
+							"type": "LinkedServiceReference"
+						}
 					}
 				],
 				"policy": {
@@ -712,7 +739,8 @@
 				"[concat(variables('factoryId'), '/datasets/HistoricPurchaseData')]",
 				"[concat(variables('factoryId'), '/datasets/HistoricSalesData')]",
 				"[concat(variables('factoryId'), '/datasets/HistoricStock')]",
-				"[concat(variables('factoryId'), '/dataflows/bharatpayDF')]"
+				"[concat(variables('factoryId'), '/dataflows/bharatpayDF_One_Time')]",
+				"[concat(variables('factoryId'), '/linkedServices/CraftManaikTxUTR')]"
 			]
 		},
 		{
@@ -1221,33 +1249,663 @@
 				"type": "SqlServerTable",
 				"schema": [
 					{
-						"name": "Date",
+						"name": "Branch",
+						"type": "nvarchar"
+					},
+					{
+						"name": "voucherno",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "date",
 						"type": "datetime",
 						"precision": 23,
 						"scale": 3
 					},
 					{
-						"name": "Voucherno",
+						"name": "Time",
+						"type": "nvarchar"
+					},
+					{
+						"name": "custid",
 						"type": "bigint",
 						"precision": 19
 					},
 					{
-						"name": "User",
+						"name": "customer",
 						"type": "nvarchar"
 					},
 					{
-						"name": "Productid",
+						"name": "GSTIN",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TCSApplicableAmt",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "TcsAmount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Netamount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "cash",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "AC",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "AC InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "AC InstruDate",
+						"type": "varchar"
+					},
+					{
+						"name": "Advance1",
+						"type": "varchar"
+					},
+					{
+						"name": "Advance1 InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Advance1 Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "AMAZON",
+						"type": "varchar"
+					},
+					{
+						"name": "AMAZON InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "AMAZON Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Cheque",
+						"type": "varchar"
+					},
+					{
+						"name": "Cheque InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Cheque Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Pinelab  Credit Card / Debit Card",
+						"type": "varchar"
+					},
+					{
+						"name": "Pinelab  Credit Card / Debit Card InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Pinelab  Credit Card / Debit Card Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Credit Note",
+						"type": "varchar"
+					},
+					{
+						"name": "Credit Note InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Credit Note Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Hdb Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Hdb Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Hdb Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Hdfc Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Hdfc Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Hdfc Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Home Credit Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Home Credit Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Home Credit Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Online Payment Transfer",
+						"type": "varchar"
+					},
+					{
+						"name": "Online Payment Transfer insttrno",
+						"type": "varchar"
+					},
+					{
+						"name": "Online Payment Transfer Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Samsung Sure Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Samsung Sure Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Samsung Sure Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Tvs Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Tvs Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Tvs Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Icici Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Icici Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Icici Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Bharatpe Payment",
+						"type": "varchar"
+					},
+					{
+						"name": "Bharatpe Payment InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Bharatpe Payment Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Idfc First Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Idfc First Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Idfc First Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Upgrad Program",
+						"type": "varchar"
+					},
+					{
+						"name": "Upgrad Program InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Upgrad Program Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "MAHINDRA FINANCE",
+						"type": "varchar"
+					},
+					{
+						"name": "MAHINDRA FINANCE InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "MAHINDRA FINANCE Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Paytm  Credit Card / Debit Card",
+						"type": "varchar"
+					},
+					{
+						"name": "Paytm  Credit Card / Debit Card instruno",
+						"type": "varchar"
+					},
+					{
+						"name": "Paytm  Credit Card / Debit Card Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "ZEST MONEY FINANCE",
+						"type": "varchar"
+					},
+					{
+						"name": "ZEST MONEY FINANCE InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "ZEST MONEY FINANCE Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Innoviti  Credit Card / Debit Card",
+						"type": "varchar"
+					},
+					{
+						"name": "Innoviti  Credit Card / Debit Card InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Innoviti  Credit Card / Debit Card Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "S S K  APPLIENCES",
+						"type": "varchar"
+					},
+					{
+						"name": "S S K  APPLIENCES InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "S S K  APPLIENCES Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Order Id",
+						"type": "varchar"
+					},
+					{
+						"name": "Order Id InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Order Id Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Reference Number",
+						"type": "varchar"
+					},
+					{
+						"name": "Reference Number InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Reference Number Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart Commission Charges",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart Commission Charges InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart Commission Charges Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Amazon Commission Charges",
+						"type": "varchar"
+					},
+					{
+						"name": "Amazon Commission Charges InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Amazon Commission Charges Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Tcs And Tds",
+						"type": "varchar"
+					},
+					{
+						"name": "Tcs And Tds InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Tcs And Tds Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "In Account",
+						"type": "varchar"
+					},
+					{
+						"name": "In Account InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "In Account Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Credit Card / Debit Card",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Credit Card / Debit Card InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Credit Card / Debit Card Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Chola Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Chola Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Chola Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Kotak Mahindra Bank Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Kotak Mahindra Bank Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Kotak Mahindra Bank Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Gift Account",
+						"type": "varchar"
+					},
+					{
+						"name": "Gift Account InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Gift Account Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Tcs Gst",
+						"type": "varchar"
+					},
+					{
+						"name": "Tcs Gst InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Tcs Gst Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Tds Income Tax",
+						"type": "varchar"
+					},
+					{
+						"name": "Tds Income Tax InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Tds Income Tax Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart Invoice No",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart Invoice No InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart Invoice No Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Amazon Invoice No",
+						"type": "varchar"
+					},
+					{
+						"name": "Amazon Invoice No InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Amazon Invoice No Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Benow Payment",
+						"type": "varchar"
+					},
+					{
+						"name": "Benow Payment InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Benow Payment Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Poonawalla Fincorp Limited",
+						"type": "varchar"
+					},
+					{
+						"name": "Poonawalla Fincorp Limited InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Poonawalla Fincorp Limited Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Advance",
+						"type": "varchar"
+					},
+					{
+						"name": "Advance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Advance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Amezon1",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Amezon1 InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Amezon1 Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Baghbahar Pvt Ltd",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Baghbahar Pvt Ltd InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Baghbahar Pvt Ltd Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Finance Online",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Bajaj Finance Online InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Finance Online Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "INSTANT CASHBACK",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "INSTANT CASHBACK InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "INSTANT CASHBACK Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Manik Online Website",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Manik Online Website InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Manik Online Website Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Old Buyback",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Old Buyback InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Old Buyback Instrudate",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Historic_Mastersales"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ManikSqlServer')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/newTransactiondata')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ManikSqlServer",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "Branch",
+						"type": "nvarchar"
+					},
+					{
+						"name": "voucherno",
 						"type": "bigint",
 						"precision": 19
 					},
 					{
-						"name": "ProductName",
+						"name": "PaymentType",
 						"type": "nvarchar"
 					},
 					{
-						"name": "Qty",
-						"type": "decimal",
-						"precision": 18,
+						"name": "instruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Instrudate",
+						"type": "datetime",
+						"precision": 23,
 						"scale": 3
 					},
 					{
@@ -1257,41 +1915,21 @@
 						"scale": 4
 					},
 					{
-						"name": "Category",
-						"type": "nvarchar"
+						"name": "VoucherDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
 					},
 					{
-						"name": "SubCategory",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Brand",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Model",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Color",
-						"type": "nvarchar"
-					},
-					{
-						"name": "IMEINo",
-						"type": "nvarchar"
-					},
-					{
-						"name": "FromBranch",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ToBranch",
-						"type": "nvarchar"
+						"name": "VoucherTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
 					}
 				],
 				"typeProperties": {
 					"schema": "dbo",
-					"table": "Historic_Mastersales"
+					"table": "Historic_SaleVoucherwisePaymentDetails"
 				}
 			},
 			"dependsOn": [
@@ -1326,7 +1964,7 @@
 					"server": "[parameters('CraftManaikTxUTR_properties_typeProperties_server')]",
 					"database": "[parameters('CraftManaikTxUTR_properties_typeProperties_database')]",
 					"encrypt": "optional",
-					"trustServerCertificate": false,
+					"trustServerCertificate": true,
 					"authenticationType": "SQL",
 					"userName": "[parameters('CraftManaikTxUTR_properties_typeProperties_userName')]",
 					"password": {
@@ -1348,7 +1986,7 @@
 					"server": "[parameters('CraftaiManikSQL_properties_typeProperties_server')]",
 					"database": "[parameters('CraftaiManikSQL_properties_typeProperties_database')]",
 					"encrypt": "optional",
-					"trustServerCertificate": false,
+					"trustServerCertificate": true,
 					"authenticationType": "SQL",
 					"userName": "[parameters('CraftaiManikSQL_properties_typeProperties_userName')]",
 					"password": {
@@ -1700,6 +2338,499 @@
 				"[concat(variables('factoryId'), '/datasets/ManikSQLServerProd')]",
 				"[concat(variables('factoryId'), '/datasets/CraftAIManikTxUTR')]",
 				"[concat(variables('factoryId'), '/datasets/Historic_Mastersales')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/bharatpayDF_One_Time')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ManikSQLServerProd",
+								"type": "DatasetReference"
+							},
+							"name": "CraftAISQLMasterSales"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "CraftAIManikTxUTR",
+								"type": "DatasetReference"
+							},
+							"name": "bhatpayretaiware"
+						},
+						{
+							"dataset": {
+								"referenceName": "Historic_Mastersales",
+								"type": "DatasetReference"
+							},
+							"name": "ManikMobileMasterSales"
+						}
+					],
+					"transformations": [
+						{
+							"name": "BharatPayUTR",
+							"description": "Bharatpay UTR"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     today_date as string (toString(currentDate('IST')))",
+						"}",
+						"source(output(",
+						"          Branch as string,",
+						"          voucherno as long,",
+						"          date as timestamp,",
+						"          Time as string,",
+						"          custid as long,",
+						"          customer as string,",
+						"          GSTIN as string,",
+						"          TCSApplicableAmt as decimal(19,4),",
+						"          TcsAmount as decimal(19,4),",
+						"          Netamount as decimal(19,4),",
+						"          cash as decimal(19,4),",
+						"          AC as decimal(19,4),",
+						"          {AC InstruNo} as string,",
+						"          {AC InstruDate} as timestamp,",
+						"          Advance1 as decimal(19,4),",
+						"          {Advance1 InstruNo} as string,",
+						"          {Advance1 Instrudate} as timestamp,",
+						"          AMAZON as decimal(19,4),",
+						"          {AMAZON InstruNo} as string,",
+						"          {AMAZON Instrudate} as timestamp,",
+						"          {Bajaj Finance} as decimal(19,4),",
+						"          {Bajaj Finance InstruNo} as string,",
+						"          {Bajaj Finance Instrudate} as timestamp,",
+						"          Cheque as decimal(19,4),",
+						"          {Cheque InstruNo} as string,",
+						"          {Cheque Instrudate} as timestamp,",
+						"          {Pinelab  Credit Card / Debit Card} as decimal(19,4),",
+						"          {Pinelab  Credit Card / Debit Card InstruNo} as string,",
+						"          {Pinelab  Credit Card / Debit Card Instrudate} as timestamp,",
+						"          {Credit Note} as decimal(19,4),",
+						"          {Credit Note InstruNo} as string,",
+						"          {Credit Note Instrudate} as timestamp,",
+						"          {Hdb Finance} as decimal(19,4),",
+						"          {Hdb Finance InstruNo} as string,",
+						"          {Hdb Finance Instrudate} as timestamp,",
+						"          {Hdfc Finance} as decimal(19,4),",
+						"          {Hdfc Finance InstruNo} as string,",
+						"          {Hdfc Finance Instrudate} as timestamp,",
+						"          {Home Credit Finance} as decimal(19,4),",
+						"          {Home Credit Finance InstruNo} as string,",
+						"          {Home Credit Finance Instrudate} as timestamp,",
+						"          {Online Payment Transfer} as decimal(19,4),",
+						"          {Online Payment Transfer InstruNo} as string,",
+						"          {Online Payment Transfer Instrudate} as timestamp,",
+						"          {Samsung Sure Finance} as decimal(19,4),",
+						"          {Samsung Sure Finance InstruNo} as string,",
+						"          {Samsung Sure Finance Instrudate} as timestamp,",
+						"          {Tvs Finance} as decimal(19,4),",
+						"          {Tvs Finance InstruNo} as string,",
+						"          {Tvs Finance Instrudate} as timestamp,",
+						"          {Icici Finance} as decimal(19,4),",
+						"          {Icici Finance InstruNo} as string,",
+						"          {Icici Finance Instrudate} as timestamp,",
+						"          {Bharatpe Payment} as decimal(19,4),",
+						"          {Bharatpe Payment InstruNo} as string,",
+						"          {Bharatpe Payment Instrudate} as timestamp,",
+						"          {Idfc First Finance} as decimal(19,4),",
+						"          {Idfc First Finance InstruNo} as string,",
+						"          {Idfc First Finance Instrudate} as timestamp,",
+						"          {Upgrad Program} as decimal(19,4),",
+						"          {Upgrad Program InstruNo} as string,",
+						"          {Upgrad Program Instrudate} as timestamp,",
+						"          {MAHINDRA FINANCE} as decimal(19,4),",
+						"          {MAHINDRA FINANCE InstruNo} as string,",
+						"          {MAHINDRA FINANCE Instrudate} as timestamp,",
+						"          {Paytm  Credit Card / Debit Card} as decimal(19,4),",
+						"          {Paytm  Credit Card / Debit Card InstruNo} as string,",
+						"          {Paytm  Credit Card / Debit Card Instrudate} as timestamp,",
+						"          {ZEST MONEY FINANCE} as decimal(19,4),",
+						"          {ZEST MONEY FINANCE InstruNo} as string,",
+						"          {ZEST MONEY FINANCE Instrudate} as timestamp,",
+						"          {Innoviti  Credit Card / Debit Card} as decimal(19,4),",
+						"          {Innoviti  Credit Card / Debit Card InstruNo} as string,",
+						"          {Innoviti  Credit Card / Debit Card Instrudate} as timestamp,",
+						"          {S S K  APPLIENCES} as decimal(19,4),",
+						"          {S S K  APPLIENCES InstruNo} as string,",
+						"          {S S K  APPLIENCES Instrudate} as timestamp,",
+						"          Flipkart as decimal(19,4),",
+						"          {Flipkart InstruNo} as string,",
+						"          {Flipkart Instrudate} as timestamp,",
+						"          {Order Id} as decimal(19,4),",
+						"          {Order Id InstruNo} as string,",
+						"          {Order Id Instrudate} as timestamp,",
+						"          {Reference Number} as decimal(19,4),",
+						"          {Reference Number InstruNo} as string,",
+						"          {Reference Number Instrudate} as timestamp,",
+						"          {Flipkart Commission Charges} as decimal(19,4),",
+						"          {Flipkart Commission Charges InstruNo} as string,",
+						"          {Flipkart Commission Charges Instrudate} as timestamp,",
+						"          {Amazon Commission Charges} as decimal(19,4),",
+						"          {Amazon Commission Charges InstruNo} as string,",
+						"          {Amazon Commission Charges Instrudate} as timestamp,",
+						"          {Tcs And Tds} as decimal(19,4),",
+						"          {Tcs And Tds InstruNo} as string,",
+						"          {Tcs And Tds Instrudate} as timestamp,",
+						"          {In Account} as decimal(19,4),",
+						"          {In Account InstruNo} as string,",
+						"          {In Account Instrudate} as timestamp,",
+						"          {Bajaj Credit Card / Debit Card} as decimal(19,4),",
+						"          {Bajaj Credit Card / Debit Card InstruNo} as string,",
+						"          {Bajaj Credit Card / Debit Card Instrudate} as timestamp,",
+						"          {Chola Finance} as decimal(19,4),",
+						"          {Chola Finance InstruNo} as string,",
+						"          {Chola Finance Instrudate} as timestamp,",
+						"          {Kotak Mahindra Bank Finance} as decimal(19,4),",
+						"          {Kotak Mahindra Bank Finance InstruNo} as string,",
+						"          {Kotak Mahindra Bank Finance Instrudate} as timestamp,",
+						"          {Gift Account} as decimal(19,4),",
+						"          {Gift Account InstruNo} as string,",
+						"          {Gift Account Instrudate} as timestamp,",
+						"          {Tcs Gst} as decimal(19,4),",
+						"          {Tcs Gst InstruNo} as string,",
+						"          {Tcs Gst Instrudate} as timestamp,",
+						"          {Tds Income Tax} as decimal(19,4),",
+						"          {Tds Income Tax InstruNo} as string,",
+						"          {Tds Income Tax Instrudate} as timestamp,",
+						"          {Flipkart Invoice No} as decimal(19,4),",
+						"          {Flipkart Invoice No InstruNo} as string,",
+						"          {Flipkart Invoice No Instrudate} as timestamp,",
+						"          {Amazon Invoice No} as decimal(19,4),",
+						"          {Amazon Invoice No InstruNo} as string,",
+						"          {Amazon Invoice No Instrudate} as timestamp,",
+						"          {Benow Payment} as decimal(19,4),",
+						"          {Benow Payment InstruNo} as string,",
+						"          {Benow Payment Instrudate} as timestamp,",
+						"          {Poonawalla Fincorp Limited} as decimal(19,4),",
+						"          {Poonawalla Fincorp Limited InstruNo} as string,",
+						"          {Poonawalla Fincorp Limited Instrudate} as timestamp,",
+						"          Advance as decimal(19,4),",
+						"          {Advance InstruNo} as string,",
+						"          {Advance Instrudate} as timestamp,",
+						"          Amezon1 as decimal(19,4),",
+						"          {Amezon1 InstruNo} as string,",
+						"          {Amezon1 Instrudate} as timestamp,",
+						"          {Baghbahar Pvt Ltd} as decimal(19,4),",
+						"          {Baghbahar Pvt Ltd InstruNo} as string,",
+						"          {Baghbahar Pvt Ltd Instrudate} as timestamp,",
+						"          {Bajaj Finance Online} as decimal(19,4),",
+						"          {Bajaj Finance Online InstruNo} as string,",
+						"          {Bajaj Finance Online Instrudate} as timestamp,",
+						"          {INSTANT CASHBACK} as decimal(19,4),",
+						"          {INSTANT CASHBACK InstruNo} as string,",
+						"          {INSTANT CASHBACK Instrudate} as timestamp,",
+						"          {Manik Online Website} as decimal(19,4),",
+						"          {Manik Online Website InstruNo} as string,",
+						"          {Manik Online Website Instrudate} as timestamp,",
+						"          {Old Buyback} as decimal(19,4),",
+						"          {Old Buyback InstruNo} as string,",
+						"          {Old Buyback Instrudate} as timestamp",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: (\"select * from [dbo].[Historic_Mastersales] \"),",
+						"     format: 'query') ~> CraftAISQLMasterSales",
+						"CraftAISQLMasterSales derive(BharatPayUTR = substring({Bharatpe Payment InstruNo}, 7)) ~> BharatPayUTR",
+						"BharatPayUTR sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     recreate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> bhatpayretaiware",
+						"BharatPayUTR sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     recreate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> ManikMobileMasterSales"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ManikSQLServerProd')]",
+				"[concat(variables('factoryId'), '/datasets/CraftAIManikTxUTR')]",
+				"[concat(variables('factoryId'), '/datasets/Historic_Mastersales')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/bharatpay_NEW_One_Time')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "newTransactiondata",
+								"type": "DatasetReference"
+							},
+							"name": "bhartpaynew",
+							"description": "Import data from "
+						},
+						{
+							"dataset": {
+								"referenceName": "ManikSQLServerProd",
+								"type": "DatasetReference"
+							},
+							"name": "MAsterdata"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "CraftAIManikTxUTR",
+								"type": "DatasetReference"
+							},
+							"name": "BharatpayNew",
+							"description": "new bharatpay data"
+						}
+					],
+					"transformations": [
+						{
+							"name": "bharatpayUTR",
+							"description": "updating  instruNo, '"
+						},
+						{
+							"name": "lookup1"
+						},
+						{
+							"name": "select1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Branch as string,",
+						"          voucherno as long,",
+						"          PaymentType as string,",
+						"          instruNo as string,",
+						"          Instrudate as timestamp,",
+						"          Amount as decimal(19,4),",
+						"          VoucherDate as timestamp,",
+						"          VoucherTime as timestamp",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: (\" select * from [Upplus].[dbo].[Historic_SaleVoucherwisePaymentDetails] where PaymentType ='Bharatpe Payment' \"),",
+						"     format: 'query') ~> bhartpaynew",
+						"source(output(",
+						"          Branch as string,",
+						"          voucherno as long,",
+						"          date as timestamp,",
+						"          Time as string,",
+						"          custid as long,",
+						"          customer as string,",
+						"          GSTIN as string,",
+						"          TCSApplicableAmt as decimal(19,4),",
+						"          TcsAmount as decimal(19,4),",
+						"          Netamount as decimal(19,4),",
+						"          cash as decimal(19,4),",
+						"          AC as integer,",
+						"          {AC InstruNo} as string,",
+						"          {AC InstruDate} as string,",
+						"          Advance1 as string,",
+						"          {Advance1 InstruNo} as string,",
+						"          {Advance1 Instrudate} as string,",
+						"          AMAZON as string,",
+						"          {AMAZON InstruNo} as string,",
+						"          {AMAZON Instrudate} as string,",
+						"          {Bajaj Finance} as string,",
+						"          {Bajaj Finance InstruNo} as string,",
+						"          {Bajaj Finance Instrudate} as string,",
+						"          Cheque as string,",
+						"          {Cheque InstruNo} as string,",
+						"          {Cheque Instrudate} as string,",
+						"          {Pinelab  Credit Card / Debit Card} as string,",
+						"          {Pinelab  Credit Card / Debit Card InstruNo} as string,",
+						"          {Pinelab  Credit Card / Debit Card Instrudate} as string,",
+						"          {Credit Note} as string,",
+						"          {Credit Note InstruNo} as string,",
+						"          {Credit Note Instrudate} as string,",
+						"          {Hdb Finance} as string,",
+						"          {Hdb Finance InstruNo} as string,",
+						"          {Hdb Finance Instrudate} as string,",
+						"          {Hdfc Finance} as string,",
+						"          {Hdfc Finance InstruNo} as string,",
+						"          {Hdfc Finance Instrudate} as string,",
+						"          {Home Credit Finance} as string,",
+						"          {Home Credit Finance InstruNo} as string,",
+						"          {Home Credit Finance Instrudate} as string,",
+						"          {Online Payment Transfer} as string,",
+						"          {Online Payment Transfer insttrno} as string,",
+						"          {Online Payment Transfer Instrudate} as string,",
+						"          {Samsung Sure Finance} as string,",
+						"          {Samsung Sure Finance InstruNo} as string,",
+						"          {Samsung Sure Finance Instrudate} as string,",
+						"          {Tvs Finance} as string,",
+						"          {Tvs Finance InstruNo} as string,",
+						"          {Tvs Finance Instrudate} as string,",
+						"          {Icici Finance} as string,",
+						"          {Icici Finance InstruNo} as string,",
+						"          {Icici Finance Instrudate} as string,",
+						"          {Bharatpe Payment} as string,",
+						"          {Bharatpe Payment InstruNo} as string,",
+						"          {Bharatpe Payment Instrudate} as string,",
+						"          {Idfc First Finance} as string,",
+						"          {Idfc First Finance InstruNo} as string,",
+						"          {Idfc First Finance Instrudate} as string,",
+						"          {Upgrad Program} as string,",
+						"          {Upgrad Program InstruNo} as string,",
+						"          {Upgrad Program Instrudate} as string,",
+						"          {MAHINDRA FINANCE} as string,",
+						"          {MAHINDRA FINANCE InstruNo} as string,",
+						"          {MAHINDRA FINANCE Instrudate} as string,",
+						"          {Paytm  Credit Card / Debit Card} as string,",
+						"          {Paytm  Credit Card / Debit Card instruno} as string,",
+						"          {Paytm  Credit Card / Debit Card Instrudate} as string,",
+						"          {ZEST MONEY FINANCE} as string,",
+						"          {ZEST MONEY FINANCE InstruNo} as string,",
+						"          {ZEST MONEY FINANCE Instrudate} as string,",
+						"          {Innoviti  Credit Card / Debit Card} as string,",
+						"          {Innoviti  Credit Card / Debit Card InstruNo} as string,",
+						"          {Innoviti  Credit Card / Debit Card Instrudate} as string,",
+						"          {S S K  APPLIENCES} as string,",
+						"          {S S K  APPLIENCES InstruNo} as string,",
+						"          {S S K  APPLIENCES Instrudate} as string,",
+						"          Flipkart as string,",
+						"          {Flipkart InstruNo} as string,",
+						"          {Flipkart Instrudate} as string,",
+						"          {Order Id} as string,",
+						"          {Order Id InstruNo} as string,",
+						"          {Order Id Instrudate} as string,",
+						"          {Reference Number} as string,",
+						"          {Reference Number InstruNo} as string,",
+						"          {Reference Number Instrudate} as string,",
+						"          {Flipkart Commission Charges} as string,",
+						"          {Flipkart Commission Charges InstruNo} as string,",
+						"          {Flipkart Commission Charges Instrudate} as string,",
+						"          {Amazon Commission Charges} as string,",
+						"          {Amazon Commission Charges InstruNo} as string,",
+						"          {Amazon Commission Charges Instrudate} as string,",
+						"          {Tcs And Tds} as string,",
+						"          {Tcs And Tds InstruNo} as string,",
+						"          {Tcs And Tds Instrudate} as string,",
+						"          {In Account} as string,",
+						"          {In Account InstruNo} as string,",
+						"          {In Account Instrudate} as string,",
+						"          {Bajaj Credit Card / Debit Card} as string,",
+						"          {Bajaj Credit Card / Debit Card InstruNo} as string,",
+						"          {Bajaj Credit Card / Debit Card Instrudate} as string,",
+						"          {Chola Finance} as string,",
+						"          {Chola Finance InstruNo} as string,",
+						"          {Chola Finance Instrudate} as string,",
+						"          {Kotak Mahindra Bank Finance} as string,",
+						"          {Kotak Mahindra Bank Finance InstruNo} as string,",
+						"          {Kotak Mahindra Bank Finance Instrudate} as string,",
+						"          {Gift Account} as string,",
+						"          {Gift Account InstruNo} as string,",
+						"          {Gift Account Instrudate} as string,",
+						"          {Tcs Gst} as string,",
+						"          {Tcs Gst InstruNo} as string,",
+						"          {Tcs Gst Instrudate} as string,",
+						"          {Tds Income Tax} as string,",
+						"          {Tds Income Tax InstruNo} as string,",
+						"          {Tds Income Tax Instrudate} as string,",
+						"          {Flipkart Invoice No} as string,",
+						"          {Flipkart Invoice No InstruNo} as string,",
+						"          {Flipkart Invoice No Instrudate} as string,",
+						"          {Amazon Invoice No} as string,",
+						"          {Amazon Invoice No InstruNo} as string,",
+						"          {Amazon Invoice No Instrudate} as string,",
+						"          {Benow Payment} as string,",
+						"          {Benow Payment InstruNo} as string,",
+						"          {Benow Payment Instrudate} as string,",
+						"          {Poonawalla Fincorp Limited} as string,",
+						"          {Poonawalla Fincorp Limited InstruNo} as string,",
+						"          {Poonawalla Fincorp Limited Instrudate} as string,",
+						"          Advance as string,",
+						"          {Advance InstruNo} as string,",
+						"          {Advance Instrudate} as string,",
+						"          Amezon1 as integer,",
+						"          {Amezon1 InstruNo} as string,",
+						"          {Amezon1 Instrudate} as string,",
+						"          {Baghbahar Pvt Ltd} as integer,",
+						"          {Baghbahar Pvt Ltd InstruNo} as string,",
+						"          {Baghbahar Pvt Ltd Instrudate} as string,",
+						"          {Bajaj Finance Online} as integer,",
+						"          {Bajaj Finance Online InstruNo} as string,",
+						"          {Bajaj Finance Online Instrudate} as string,",
+						"          {INSTANT CASHBACK} as integer,",
+						"          {INSTANT CASHBACK InstruNo} as string,",
+						"          {INSTANT CASHBACK Instrudate} as string,",
+						"          {Manik Online Website} as integer,",
+						"          {Manik Online Website InstruNo} as string,",
+						"          {Manik Online Website Instrudate} as string,",
+						"          {Old Buyback} as integer,",
+						"          {Old Buyback InstruNo} as string,",
+						"          {Old Buyback Instrudate} as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT * FROM dbo.Historic_Mastersales WHERE [Bharatpe Payment InstruNo] IS NOT NULL AND LTRIM(RTRIM([Bharatpe Payment InstruNo])) <> \\'\\' AND LTRIM(RTRIM([Bharatpe Payment InstruNo])) <> \\'0\\'\\n',",
+						"     format: 'query') ~> MAsterdata",
+						"bhartpaynew derive(instruNo = substring({instruNo}, 7)) ~> bharatpayUTR",
+						"bharatpayUTR, MAsterdata lookup(bhartpaynew@voucherno == MAsterdata@voucherno,",
+						"     multiple: false,",
+						"     pickup: 'any',",
+						"     broadcast: 'auto')~> lookup1",
+						"lookup1 select(mapColumn(",
+						"          Branch = bhartpaynew@Branch,",
+						"          voucherno = bhartpaynew@voucherno,",
+						"          PaymentType,",
+						"          instruNo,",
+						"          Instrudate,",
+						"          Amount,",
+						"          VoucherDate,",
+						"          VoucherTime,",
+						"          Branch = MAsterdata@Branch,",
+						"          voucherno = MAsterdata@voucherno,",
+						"          date,",
+						"          Time,",
+						"          custid,",
+						"          customer,",
+						"          GSTIN,",
+						"          Netamount,",
+						"          {Bharatpe Payment},",
+						"          {Bharatpe Payment InstruNo},",
+						"          {Bharatpe Payment Instrudate}",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     recreate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> BharatpayNew"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/newTransactiondata')]",
+				"[concat(variables('factoryId'), '/datasets/ManikSQLServerProd')]",
+				"[concat(variables('factoryId'), '/datasets/CraftAIManikTxUTR')]"
 			]
 		}
 	]

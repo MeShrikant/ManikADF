@@ -21,22 +21,22 @@
 			"value": "https://storageforrecon.dfs.core.windows.net/"
 		},
 		"CraftManaikTxUTR_properties_typeProperties_server": {
-			"value": "135.235.162.172"
+			"value": "20.204.7.31"
 		},
 		"CraftManaikTxUTR_properties_typeProperties_database": {
-			"value": "CraftTraxUTR"
+			"value": "TxUTR"
 		},
 		"CraftManaikTxUTR_properties_typeProperties_userName": {
-			"value": "sql_admin"
+			"value": "craftai"
 		},
 		"CraftaiManikSQL_properties_typeProperties_server": {
-			"value": "135.235.162.172"
+			"value": "20.204.7.31"
 		},
 		"CraftaiManikSQL_properties_typeProperties_database": {
 			"value": "ManikMobile"
 		},
 		"CraftaiManikSQL_properties_typeProperties_userName": {
-			"value": "sql_admin"
+			"value": "craftai"
 		},
 		"ManikSqlServer_properties_typeProperties_server": {
 			"value": "125.20.207.170"
