@@ -9,72 +9,619 @@
 		"type": "SqlServerTable",
 		"schema": [
 			{
-				"name": "Date",
+				"name": "Branch",
+				"type": "nvarchar"
+			},
+			{
+				"name": "voucherno",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "date",
 				"type": "datetime",
 				"precision": 23,
 				"scale": 3
 			},
 			{
-				"name": "Voucherno",
+				"name": "Time",
+				"type": "nvarchar"
+			},
+			{
+				"name": "custid",
 				"type": "bigint",
 				"precision": 19
 			},
 			{
-				"name": "User",
+				"name": "customer",
 				"type": "nvarchar"
 			},
 			{
-				"name": "Productid",
-				"type": "bigint",
-				"precision": 19
-			},
-			{
-				"name": "ProductName",
+				"name": "GSTIN",
 				"type": "nvarchar"
 			},
 			{
-				"name": "Qty",
-				"type": "decimal",
-				"precision": 18,
-				"scale": 3
-			},
-			{
-				"name": "Amount",
+				"name": "TCSApplicableAmt",
 				"type": "money",
 				"precision": 19,
 				"scale": 4
 			},
 			{
-				"name": "Category",
-				"type": "nvarchar"
+				"name": "TcsAmount",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
 			},
 			{
-				"name": "SubCategory",
-				"type": "nvarchar"
+				"name": "Netamount",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
 			},
 			{
-				"name": "Brand",
-				"type": "nvarchar"
+				"name": "cash",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
 			},
 			{
-				"name": "Model",
-				"type": "nvarchar"
+				"name": "AC",
+				"type": "int",
+				"precision": 10
 			},
 			{
-				"name": "Color",
-				"type": "nvarchar"
+				"name": "AC InstruNo",
+				"type": "varchar"
 			},
 			{
-				"name": "IMEINo",
-				"type": "nvarchar"
+				"name": "AC InstruDate",
+				"type": "varchar"
 			},
 			{
-				"name": "FromBranch",
-				"type": "nvarchar"
+				"name": "Advance1",
+				"type": "varchar"
 			},
 			{
-				"name": "ToBranch",
-				"type": "nvarchar"
+				"name": "Advance1 InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Advance1 Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "AMAZON",
+				"type": "varchar"
+			},
+			{
+				"name": "AMAZON InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "AMAZON Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Bajaj Finance",
+				"type": "varchar"
+			},
+			{
+				"name": "Bajaj Finance InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Bajaj Finance Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Cheque",
+				"type": "varchar"
+			},
+			{
+				"name": "Cheque InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Cheque Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Pinelab  Credit Card / Debit Card",
+				"type": "varchar"
+			},
+			{
+				"name": "Pinelab  Credit Card / Debit Card InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Pinelab  Credit Card / Debit Card Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Credit Note",
+				"type": "varchar"
+			},
+			{
+				"name": "Credit Note InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Credit Note Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Hdb Finance",
+				"type": "varchar"
+			},
+			{
+				"name": "Hdb Finance InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Hdb Finance Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Hdfc Finance",
+				"type": "varchar"
+			},
+			{
+				"name": "Hdfc Finance InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Hdfc Finance Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Home Credit Finance",
+				"type": "varchar"
+			},
+			{
+				"name": "Home Credit Finance InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Home Credit Finance Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Online Payment Transfer",
+				"type": "varchar"
+			},
+			{
+				"name": "Online Payment Transfer insttrno",
+				"type": "varchar"
+			},
+			{
+				"name": "Online Payment Transfer Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Samsung Sure Finance",
+				"type": "varchar"
+			},
+			{
+				"name": "Samsung Sure Finance InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Samsung Sure Finance Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Tvs Finance",
+				"type": "varchar"
+			},
+			{
+				"name": "Tvs Finance InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Tvs Finance Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Icici Finance",
+				"type": "varchar"
+			},
+			{
+				"name": "Icici Finance InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Icici Finance Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Bharatpe Payment",
+				"type": "varchar"
+			},
+			{
+				"name": "Bharatpe Payment InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Bharatpe Payment Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Idfc First Finance",
+				"type": "varchar"
+			},
+			{
+				"name": "Idfc First Finance InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Idfc First Finance Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Upgrad Program",
+				"type": "varchar"
+			},
+			{
+				"name": "Upgrad Program InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Upgrad Program Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "MAHINDRA FINANCE",
+				"type": "varchar"
+			},
+			{
+				"name": "MAHINDRA FINANCE InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "MAHINDRA FINANCE Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Paytm  Credit Card / Debit Card",
+				"type": "varchar"
+			},
+			{
+				"name": "Paytm  Credit Card / Debit Card instruno",
+				"type": "varchar"
+			},
+			{
+				"name": "Paytm  Credit Card / Debit Card Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "ZEST MONEY FINANCE",
+				"type": "varchar"
+			},
+			{
+				"name": "ZEST MONEY FINANCE InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "ZEST MONEY FINANCE Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Innoviti  Credit Card / Debit Card",
+				"type": "varchar"
+			},
+			{
+				"name": "Innoviti  Credit Card / Debit Card InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Innoviti  Credit Card / Debit Card Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "S S K  APPLIENCES",
+				"type": "varchar"
+			},
+			{
+				"name": "S S K  APPLIENCES InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "S S K  APPLIENCES Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Flipkart",
+				"type": "varchar"
+			},
+			{
+				"name": "Flipkart InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Flipkart Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Order Id",
+				"type": "varchar"
+			},
+			{
+				"name": "Order Id InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Order Id Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Reference Number",
+				"type": "varchar"
+			},
+			{
+				"name": "Reference Number InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Reference Number Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Flipkart Commission Charges",
+				"type": "varchar"
+			},
+			{
+				"name": "Flipkart Commission Charges InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Flipkart Commission Charges Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Amazon Commission Charges",
+				"type": "varchar"
+			},
+			{
+				"name": "Amazon Commission Charges InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Amazon Commission Charges Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Tcs And Tds",
+				"type": "varchar"
+			},
+			{
+				"name": "Tcs And Tds InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Tcs And Tds Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "In Account",
+				"type": "varchar"
+			},
+			{
+				"name": "In Account InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "In Account Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Bajaj Credit Card / Debit Card",
+				"type": "varchar"
+			},
+			{
+				"name": "Bajaj Credit Card / Debit Card InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Bajaj Credit Card / Debit Card Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Chola Finance",
+				"type": "varchar"
+			},
+			{
+				"name": "Chola Finance InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Chola Finance Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Kotak Mahindra Bank Finance",
+				"type": "varchar"
+			},
+			{
+				"name": "Kotak Mahindra Bank Finance InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Kotak Mahindra Bank Finance Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Gift Account",
+				"type": "varchar"
+			},
+			{
+				"name": "Gift Account InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Gift Account Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Tcs Gst",
+				"type": "varchar"
+			},
+			{
+				"name": "Tcs Gst InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Tcs Gst Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Tds Income Tax",
+				"type": "varchar"
+			},
+			{
+				"name": "Tds Income Tax InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Tds Income Tax Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Flipkart Invoice No",
+				"type": "varchar"
+			},
+			{
+				"name": "Flipkart Invoice No InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Flipkart Invoice No Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Amazon Invoice No",
+				"type": "varchar"
+			},
+			{
+				"name": "Amazon Invoice No InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Amazon Invoice No Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Benow Payment",
+				"type": "varchar"
+			},
+			{
+				"name": "Benow Payment InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Benow Payment Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Poonawalla Fincorp Limited",
+				"type": "varchar"
+			},
+			{
+				"name": "Poonawalla Fincorp Limited InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Poonawalla Fincorp Limited Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Advance",
+				"type": "varchar"
+			},
+			{
+				"name": "Advance InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Advance Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Amezon1",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Amezon1 InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Amezon1 Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Baghbahar Pvt Ltd",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Baghbahar Pvt Ltd InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Baghbahar Pvt Ltd Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Bajaj Finance Online",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Bajaj Finance Online InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Bajaj Finance Online Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "INSTANT CASHBACK",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "INSTANT CASHBACK InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "INSTANT CASHBACK Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Manik Online Website",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Manik Online Website InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Manik Online Website Instrudate",
+				"type": "varchar"
+			},
+			{
+				"name": "Old Buyback",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Old Buyback InstruNo",
+				"type": "varchar"
+			},
+			{
+				"name": "Old Buyback Instrudate",
+				"type": "varchar"
 			}
 		],
 		"typeProperties": {
