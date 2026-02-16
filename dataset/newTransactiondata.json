@@ -1,0 +1,58 @@
+{
+	"name": "newTransactiondata",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ManikSqlServer",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "Branch",
+				"type": "nvarchar"
+			},
+			{
+				"name": "voucherno",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "PaymentType",
+				"type": "nvarchar"
+			},
+			{
+				"name": "instruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Instrudate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Amount",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "VoucherDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "VoucherTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Historic_SaleVoucherwisePaymentDetails"
+		}
+	}
+}
