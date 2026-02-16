@@ -575,6 +575,8 @@
 					{
 						"name": "MasterSalesDF",
 						"type": "ExecuteDataFlow",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -608,6 +610,8 @@
 					{
 						"name": "One_time_Bharatpay",
 						"type": "SqlServerStoredProcedure",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "MasterSalesDF",
@@ -631,6 +635,37 @@
 							"referenceName": "CraftManaikTxUTR",
 							"type": "LinkedServiceReference"
 						}
+					},
+					{
+						"name": "bharatpay_NEW_One_Time",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "bharatpay_NEW_One_Time",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"bhartpaynew": {},
+									"MAsterdata": {},
+									"BharatpayNew": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
 					}
 				],
 				"policy": {
@@ -639,7 +674,9 @@
 				"annotations": [],
 				"lastPublishTime": "2025-12-26T16:19:10Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/bharatpay_NEW_One_Time')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/halfhourlytrigger')]",
