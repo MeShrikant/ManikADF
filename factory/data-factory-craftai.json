@@ -1,0 +1,15 @@
+{
+	"name": "data-factory-craftai",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "eastus2",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "6774849a-18bf-46ba-a90c-64c7b55f6e09",
+		"tenantId": "5ac9d076-ea7f-4ba3-90a4-62dfdf469a19"
+	}
+}
