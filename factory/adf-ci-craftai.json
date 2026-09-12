@@ -1,0 +1,15 @@
+{
+	"name": "adf-ci-craftai",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "ecc14f97-c22a-4f54-8610-d90d3a925045",
+		"tenantId": "5ac9d076-ea7f-4ba3-90a4-62dfdf469a19"
+	}
+}
