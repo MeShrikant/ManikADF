@@ -5,13 +5,13 @@
 		"annotations": [],
 		"type": "SqlServer",
 		"typeProperties": {
-			"server": "20.204.7.31",
+			"server": "172.198.70.190",
 			"database": "ManikMobile",
 			"encrypt": "optional",
 			"trustServerCertificate": true,
 			"authenticationType": "SQL",
 			"userName": "craftai",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDY5RDZGNzRGLUUwRDUtNDI2My05QTdDLTYzNkNBQkVDQUVCRV85MDdmMGQyYS1iZTgzLTQ2MWMtOTdiNS0yZDgwYjhhMzhkYjIiDQp9"
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDIxQTMyNkRGLURGN0MtNDZCQS1BM0I3LTBFQkYxRDJDMTMyMl82MWVhMWE5Zi0yMTg4LTQ4MTItYWViMC1kZWVkNTI0MjA0YzgiDQp9"
 		}
 	}
 }
