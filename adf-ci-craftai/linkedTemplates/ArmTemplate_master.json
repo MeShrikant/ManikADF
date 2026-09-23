@@ -1,0 +1,160 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-ci-craftai"
+		},
+		"BharatPay_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'BharatPay'"
+		},
+		"CraftManaikTxUTR_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'CraftManaikTxUTR'"
+		},
+		"CraftaiManikSQL_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'CraftaiManikSQL'"
+		},
+		"ManikSqlServer_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ManikSqlServer'"
+		},
+		"BharatPay_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://storagevoicebotcraftai.dfs.core.windows.net/"
+		},
+		"CraftManaikTxUTR_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "172.198.70.190"
+		},
+		"CraftManaikTxUTR_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "TxUTR"
+		},
+		"CraftManaikTxUTR_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "craftai"
+		},
+		"CraftaiManikSQL_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "172.198.70.190"
+		},
+		"CraftaiManikSQL_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "ManikMobile"
+		},
+		"CraftaiManikSQL_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "craftai"
+		},
+		"ManikSqlServer_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "125.20.207.170"
+		},
+		"ManikSqlServer_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Upplus"
+		},
+		"ManikSqlServer_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "Historic"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "adf-ci-craftai_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"BharatPay_accountKey": {
+						"value": "[parameters('BharatPay_accountKey')]"
+					},
+					"CraftManaikTxUTR_password": {
+						"value": "[parameters('CraftManaikTxUTR_password')]"
+					},
+					"CraftaiManikSQL_password": {
+						"value": "[parameters('CraftaiManikSQL_password')]"
+					},
+					"ManikSqlServer_password": {
+						"value": "[parameters('ManikSqlServer_password')]"
+					},
+					"BharatPay_properties_typeProperties_url": {
+						"value": "[parameters('BharatPay_properties_typeProperties_url')]"
+					},
+					"CraftManaikTxUTR_properties_typeProperties_server": {
+						"value": "[parameters('CraftManaikTxUTR_properties_typeProperties_server')]"
+					},
+					"CraftManaikTxUTR_properties_typeProperties_database": {
+						"value": "[parameters('CraftManaikTxUTR_properties_typeProperties_database')]"
+					},
+					"CraftManaikTxUTR_properties_typeProperties_userName": {
+						"value": "[parameters('CraftManaikTxUTR_properties_typeProperties_userName')]"
+					},
+					"CraftaiManikSQL_properties_typeProperties_server": {
+						"value": "[parameters('CraftaiManikSQL_properties_typeProperties_server')]"
+					},
+					"CraftaiManikSQL_properties_typeProperties_database": {
+						"value": "[parameters('CraftaiManikSQL_properties_typeProperties_database')]"
+					},
+					"CraftaiManikSQL_properties_typeProperties_userName": {
+						"value": "[parameters('CraftaiManikSQL_properties_typeProperties_userName')]"
+					},
+					"ManikSqlServer_properties_typeProperties_server": {
+						"value": "[parameters('ManikSqlServer_properties_typeProperties_server')]"
+					},
+					"ManikSqlServer_properties_typeProperties_database": {
+						"value": "[parameters('ManikSqlServer_properties_typeProperties_database')]"
+					},
+					"ManikSqlServer_properties_typeProperties_userName": {
+						"value": "[parameters('ManikSqlServer_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "adf-ci-craftai_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf-ci-craftai_ArmTemplate_0')]"
+			]
+		}
+	]
+}

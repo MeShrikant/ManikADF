@@ -1,0 +1,3509 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-ci-craftai"
+		},
+		"BharatPay_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'BharatPay'"
+		},
+		"CraftManaikTxUTR_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'CraftManaikTxUTR'"
+		},
+		"CraftaiManikSQL_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'CraftaiManikSQL'"
+		},
+		"ManikSqlServer_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ManikSqlServer'"
+		},
+		"BharatPay_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://storagevoicebotcraftai.dfs.core.windows.net/"
+		},
+		"CraftManaikTxUTR_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "172.198.70.190"
+		},
+		"CraftManaikTxUTR_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "TxUTR"
+		},
+		"CraftManaikTxUTR_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "craftai"
+		},
+		"CraftaiManikSQL_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "172.198.70.190"
+		},
+		"CraftaiManikSQL_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "ManikMobile"
+		},
+		"CraftaiManikSQL_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "craftai"
+		},
+		"ManikSqlServer_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "125.20.207.170"
+		},
+		"ManikSqlServer_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Upplus"
+		},
+		"ManikSqlServer_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "Historic"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/BharatPay')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('BharatPay_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('BharatPay_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CraftManaikTxUTR')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"server": "[parameters('CraftManaikTxUTR_properties_typeProperties_server')]",
+					"database": "[parameters('CraftManaikTxUTR_properties_typeProperties_database')]",
+					"encrypt": "optional",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('CraftManaikTxUTR_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('CraftManaikTxUTR_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CraftaiManikSQL')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"server": "[parameters('CraftaiManikSQL_properties_typeProperties_server')]",
+					"database": "[parameters('CraftaiManikSQL_properties_typeProperties_database')]",
+					"encrypt": "optional",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('CraftaiManikSQL_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('CraftaiManikSQL_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ManikSqlServer')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"server": "[parameters('ManikSqlServer_properties_typeProperties_server')]",
+					"database": "[parameters('ManikSqlServer_properties_typeProperties_database')]",
+					"encrypt": "optional",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('ManikSqlServer_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ManikSqlServer_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/integrationRuntime-ci')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "Central India",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 10,
+							"cleanup": false,
+							"customProperties": []
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/integrationRuntime-craftai')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CraftAIManikTxUTR')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CraftManaikTxUTR",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "RetailwareData"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CraftManaikTxUTR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HistoricInterBranch')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CraftaiManikSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "HistoricInterBranch"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CraftaiManikSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HistoricPurchaseData')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CraftaiManikSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "HistoricPurchaseData"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CraftaiManikSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HistoricSalesData')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CraftaiManikSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Actual sale Rate",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "batchno",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Billtime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Branch",
+						"type": "nvarchar"
+					},
+					{
+						"name": "BranchShortName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Brand",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Company",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CounterNo",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "CPU+GST",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CustomerGroup",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CustomerGSTIN",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Custid",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "CustomerPANNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CustomerState",
+						"type": "nvarchar"
+					},
+					{
+						"name": "date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "EAN ProductId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "EWAYBIllno",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ExpiryDate",
+						"type": "nvarchar"
+					},
+					{
+						"name": "HSNCode",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PurDate",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LastPurQty",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "LineDisc%",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "MRP",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Product Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ProductId",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "REorderLevel",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 3
+					},
+					{
+						"name": "ReOrderQty",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 3
+					},
+					{
+						"name": "SaleRate",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "SaleMobileNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Salesman",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SalesmanId",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "Subcategory",
+						"type": "nvarchar"
+					},
+					{
+						"name": "User",
+						"type": "nvarchar"
+					},
+					{
+						"name": "VAT/GST %",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "VoucherNo",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "Quantity",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 4
+					},
+					{
+						"name": "Customer Address",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Line Discount Amt",
+						"type": "real",
+						"precision": 7
+					},
+					{
+						"name": "LineAmt",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "FullImeiNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Activationdate",
+						"type": "varchar"
+					},
+					{
+						"name": "IRNno",
+						"type": "nvarchar"
+					},
+					{
+						"name": "IRNdate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "GrossAmt",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "BasicAmt",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "CGSTAmount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "SGSTAmount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "IGSTAmount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Mop",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "HistoricSalesData"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CraftaiManikSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HistoricStock')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CraftaiManikSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "Productid",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "ProductName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "IMEINo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SubCategory",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Brand",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Model",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Color",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CompanyName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CPU",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "PurchaseDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "LastPurQty",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "LastPurVoucherno",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "Location",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MProductId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MRP",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Price",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "ProductCreationdate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "PurRate",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "ReorderLevel",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 3
+					},
+					{
+						"name": "ReorderQty",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 3
+					},
+					{
+						"name": "Supplier",
+						"type": "nvarchar"
+					},
+					{
+						"name": "suppliercity",
+						"type": "nvarchar"
+					},
+					{
+						"name": "GSTPer",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "HistoricStock"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CraftaiManikSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Historic_Mastersales')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CraftaiManikSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Historic_Mastersales"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CraftaiManikSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ManikSQLServer')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ManikSqlServer",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "Branch",
+						"type": "nvarchar"
+					},
+					{
+						"name": "voucherno",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Time",
+						"type": "nvarchar"
+					},
+					{
+						"name": "custid",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "customer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "GSTIN",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TCSApplicableAmt",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "TcsAmount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Netamount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "cash",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "AC",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "AC InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "AC InstruDate",
+						"type": "varchar"
+					},
+					{
+						"name": "Advance1",
+						"type": "varchar"
+					},
+					{
+						"name": "Advance1 InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Advance1 Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "AMAZON",
+						"type": "varchar"
+					},
+					{
+						"name": "AMAZON InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "AMAZON Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Cheque",
+						"type": "varchar"
+					},
+					{
+						"name": "Cheque InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Cheque Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Pinelab  Credit Card / Debit Card",
+						"type": "varchar"
+					},
+					{
+						"name": "Pinelab  Credit Card / Debit Card InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Pinelab  Credit Card / Debit Card Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Credit Note",
+						"type": "varchar"
+					},
+					{
+						"name": "Credit Note InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Credit Note Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Hdb Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Hdb Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Hdb Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Hdfc Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Hdfc Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Hdfc Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Home Credit Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Home Credit Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Home Credit Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Online Payment Transfer",
+						"type": "varchar"
+					},
+					{
+						"name": "Online Payment Transfer insttrno",
+						"type": "varchar"
+					},
+					{
+						"name": "Online Payment Transfer Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Samsung Sure Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Samsung Sure Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Samsung Sure Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Tvs Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Tvs Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Tvs Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Icici Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Icici Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Icici Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Bharatpe Payment",
+						"type": "varchar"
+					},
+					{
+						"name": "Bharatpe Payment InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Bharatpe Payment Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Idfc First Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Idfc First Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Idfc First Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Upgrad Program",
+						"type": "varchar"
+					},
+					{
+						"name": "Upgrad Program InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Upgrad Program Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "MAHINDRA FINANCE",
+						"type": "varchar"
+					},
+					{
+						"name": "MAHINDRA FINANCE InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "MAHINDRA FINANCE Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Paytm  Credit Card / Debit Card",
+						"type": "varchar"
+					},
+					{
+						"name": "Paytm  Credit Card / Debit Card instruno",
+						"type": "varchar"
+					},
+					{
+						"name": "Paytm  Credit Card / Debit Card Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "ZEST MONEY FINANCE",
+						"type": "varchar"
+					},
+					{
+						"name": "ZEST MONEY FINANCE InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "ZEST MONEY FINANCE Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Innoviti  Credit Card / Debit Card",
+						"type": "varchar"
+					},
+					{
+						"name": "Innoviti  Credit Card / Debit Card InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Innoviti  Credit Card / Debit Card Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "S S K  APPLIENCES",
+						"type": "varchar"
+					},
+					{
+						"name": "S S K  APPLIENCES InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "S S K  APPLIENCES Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Order Id",
+						"type": "varchar"
+					},
+					{
+						"name": "Order Id InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Order Id Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Reference Number",
+						"type": "varchar"
+					},
+					{
+						"name": "Reference Number InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Reference Number Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart Commission Charges",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart Commission Charges InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart Commission Charges Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Amazon Commission Charges",
+						"type": "varchar"
+					},
+					{
+						"name": "Amazon Commission Charges InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Amazon Commission Charges Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Tcs And Tds",
+						"type": "varchar"
+					},
+					{
+						"name": "Tcs And Tds InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Tcs And Tds Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "In Account",
+						"type": "varchar"
+					},
+					{
+						"name": "In Account InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "In Account Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Credit Card / Debit Card",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Credit Card / Debit Card InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Credit Card / Debit Card Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Chola Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Chola Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Chola Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Kotak Mahindra Bank Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Kotak Mahindra Bank Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Kotak Mahindra Bank Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Gift Account",
+						"type": "varchar"
+					},
+					{
+						"name": "Gift Account InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Gift Account Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Tcs Gst",
+						"type": "varchar"
+					},
+					{
+						"name": "Tcs Gst InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Tcs Gst Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Tds Income Tax",
+						"type": "varchar"
+					},
+					{
+						"name": "Tds Income Tax InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Tds Income Tax Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart Invoice No",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart Invoice No InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart Invoice No Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Amazon Invoice No",
+						"type": "varchar"
+					},
+					{
+						"name": "Amazon Invoice No InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Amazon Invoice No Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Benow Payment",
+						"type": "varchar"
+					},
+					{
+						"name": "Benow Payment InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Benow Payment Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Poonawalla Fincorp Limited",
+						"type": "varchar"
+					},
+					{
+						"name": "Poonawalla Fincorp Limited InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Poonawalla Fincorp Limited Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Advance",
+						"type": "varchar"
+					},
+					{
+						"name": "Advance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Advance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Amezon1",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Amezon1 InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Amezon1 Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Baghbahar Pvt Ltd",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Baghbahar Pvt Ltd InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Baghbahar Pvt Ltd Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Finance Online",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Bajaj Finance Online InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Finance Online Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "INSTANT CASHBACK",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "INSTANT CASHBACK InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "INSTANT CASHBACK Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Manik Online Website",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Manik Online Website InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Manik Online Website Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Old Buyback",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Old Buyback InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Old Buyback Instrudate",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Historic_Mastersales"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ManikSqlServer')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ManikSQLServerProd')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ManikSqlServer",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "Branch",
+						"type": "nvarchar"
+					},
+					{
+						"name": "voucherno",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Time",
+						"type": "nvarchar"
+					},
+					{
+						"name": "custid",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "customer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "GSTIN",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TCSApplicableAmt",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "TcsAmount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Netamount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "cash",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "AC",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "AC InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "AC InstruDate",
+						"type": "varchar"
+					},
+					{
+						"name": "Advance1",
+						"type": "varchar"
+					},
+					{
+						"name": "Advance1 InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Advance1 Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "AMAZON",
+						"type": "varchar"
+					},
+					{
+						"name": "AMAZON InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "AMAZON Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Cheque",
+						"type": "varchar"
+					},
+					{
+						"name": "Cheque InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Cheque Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Pinelab  Credit Card / Debit Card",
+						"type": "varchar"
+					},
+					{
+						"name": "Pinelab  Credit Card / Debit Card InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Pinelab  Credit Card / Debit Card Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Credit Note",
+						"type": "varchar"
+					},
+					{
+						"name": "Credit Note InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Credit Note Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Hdb Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Hdb Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Hdb Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Hdfc Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Hdfc Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Hdfc Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Home Credit Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Home Credit Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Home Credit Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Online Payment Transfer",
+						"type": "varchar"
+					},
+					{
+						"name": "Online Payment Transfer insttrno",
+						"type": "varchar"
+					},
+					{
+						"name": "Online Payment Transfer Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Samsung Sure Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Samsung Sure Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Samsung Sure Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Tvs Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Tvs Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Tvs Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Icici Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Icici Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Icici Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Bharatpe Payment",
+						"type": "varchar"
+					},
+					{
+						"name": "Bharatpe Payment InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Bharatpe Payment Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Idfc First Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Idfc First Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Idfc First Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Upgrad Program",
+						"type": "varchar"
+					},
+					{
+						"name": "Upgrad Program InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Upgrad Program Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "MAHINDRA FINANCE",
+						"type": "varchar"
+					},
+					{
+						"name": "MAHINDRA FINANCE InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "MAHINDRA FINANCE Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Paytm  Credit Card / Debit Card",
+						"type": "varchar"
+					},
+					{
+						"name": "Paytm  Credit Card / Debit Card instruno",
+						"type": "varchar"
+					},
+					{
+						"name": "Paytm  Credit Card / Debit Card Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "ZEST MONEY FINANCE",
+						"type": "varchar"
+					},
+					{
+						"name": "ZEST MONEY FINANCE InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "ZEST MONEY FINANCE Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Innoviti  Credit Card / Debit Card",
+						"type": "varchar"
+					},
+					{
+						"name": "Innoviti  Credit Card / Debit Card InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Innoviti  Credit Card / Debit Card Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "S S K  APPLIENCES",
+						"type": "varchar"
+					},
+					{
+						"name": "S S K  APPLIENCES InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "S S K  APPLIENCES Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Order Id",
+						"type": "varchar"
+					},
+					{
+						"name": "Order Id InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Order Id Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Reference Number",
+						"type": "varchar"
+					},
+					{
+						"name": "Reference Number InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Reference Number Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart Commission Charges",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart Commission Charges InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart Commission Charges Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Amazon Commission Charges",
+						"type": "varchar"
+					},
+					{
+						"name": "Amazon Commission Charges InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Amazon Commission Charges Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Tcs And Tds",
+						"type": "varchar"
+					},
+					{
+						"name": "Tcs And Tds InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Tcs And Tds Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "In Account",
+						"type": "varchar"
+					},
+					{
+						"name": "In Account InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "In Account Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Credit Card / Debit Card",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Credit Card / Debit Card InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Credit Card / Debit Card Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Chola Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Chola Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Chola Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Kotak Mahindra Bank Finance",
+						"type": "varchar"
+					},
+					{
+						"name": "Kotak Mahindra Bank Finance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Kotak Mahindra Bank Finance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Gift Account",
+						"type": "varchar"
+					},
+					{
+						"name": "Gift Account InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Gift Account Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Tcs Gst",
+						"type": "varchar"
+					},
+					{
+						"name": "Tcs Gst InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Tcs Gst Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Tds Income Tax",
+						"type": "varchar"
+					},
+					{
+						"name": "Tds Income Tax InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Tds Income Tax Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart Invoice No",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart Invoice No InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Flipkart Invoice No Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Amazon Invoice No",
+						"type": "varchar"
+					},
+					{
+						"name": "Amazon Invoice No InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Amazon Invoice No Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Benow Payment",
+						"type": "varchar"
+					},
+					{
+						"name": "Benow Payment InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Benow Payment Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Poonawalla Fincorp Limited",
+						"type": "varchar"
+					},
+					{
+						"name": "Poonawalla Fincorp Limited InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Poonawalla Fincorp Limited Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Advance",
+						"type": "varchar"
+					},
+					{
+						"name": "Advance InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Advance Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Amezon1",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Amezon1 InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Amezon1 Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Baghbahar Pvt Ltd",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Baghbahar Pvt Ltd InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Baghbahar Pvt Ltd Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Finance Online",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Bajaj Finance Online InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Bajaj Finance Online Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "INSTANT CASHBACK",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "INSTANT CASHBACK InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "INSTANT CASHBACK Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Manik Online Website",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Manik Online Website InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Manik Online Website Instrudate",
+						"type": "varchar"
+					},
+					{
+						"name": "Old Buyback",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Old Buyback InstruNo",
+						"type": "varchar"
+					},
+					{
+						"name": "Old Buyback Instrudate",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Historic_Mastersales"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ManikSqlServer')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/newTransactiondata')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ManikSqlServer",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "Branch",
+						"type": "nvarchar"
+					},
+					{
+						"name": "voucherno",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "PaymentType",
+						"type": "nvarchar"
+					},
+					{
+						"name": "instruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Instrudate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Amount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "VoucherDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "VoucherTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Historic_SaleVoucherwisePaymentDetails"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ManikSqlServer')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HistoricInterBranch_V1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CraftaiManikSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "Date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Voucherno",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "User",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Productid",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "ProductName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Qty",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 3
+					},
+					{
+						"name": "Amount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SubCategory",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Brand",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Model",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Color",
+						"type": "nvarchar"
+					},
+					{
+						"name": "IMEINo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FromBranch",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ToBranch",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Cost",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "MRP",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "MOP",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Basic Amt",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "SGSTAmount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "CGSTAmount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "IGSTAmount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "HistoricInterBranch"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CraftaiManikSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CraftAIManikTxUTR_V1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CraftManaikTxUTR",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "Branch",
+						"type": "nvarchar"
+					},
+					{
+						"name": "voucherno",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "PaymentType",
+						"type": "nvarchar"
+					},
+					{
+						"name": "instruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Amount",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "VoucherDate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "VoucherTime",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "date",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Time",
+						"type": "nvarchar"
+					},
+					{
+						"name": "custid",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "customer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "GSTIN",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Netamount",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "RetailwareID",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "RetailwareData"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CraftManaikTxUTR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Historic_Mastersales_v1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CraftaiManikSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "Branch",
+						"type": "nvarchar"
+					},
+					{
+						"name": "voucherno",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "date",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Time",
+						"type": "nvarchar"
+					},
+					{
+						"name": "custid",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "customer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "GSTIN",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TCSApplicableAmt",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "TcsAmount",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Netamount",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "cash",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "AC",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "AC InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "AC InstruDate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Advance1",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Advance1 InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Advance1 Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "AMAZON",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "AMAZON InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "AMAZON Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Bajaj Finance",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Bajaj Finance InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Bajaj Finance Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Cheque",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Cheque InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Cheque Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Pinelab  Credit Card / Debit Card",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Pinelab  Credit Card / Debit Card InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Pinelab  Credit Card / Debit Card Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Credit Note",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Credit Note InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Credit Note Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Hdb Finance",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Hdb Finance InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Hdb Finance Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Hdfc Finance",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Hdfc Finance InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Hdfc Finance Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Home Credit Finance",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Home Credit Finance InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Home Credit Finance Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Online Payment Transfer",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Online Payment Transfer InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Online Payment Transfer Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Samsung Sure Finance",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Samsung Sure Finance InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Samsung Sure Finance Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Tvs Finance",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Tvs Finance InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Tvs Finance Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Icici Finance",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Icici Finance InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Icici Finance Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Bharatpe Payment",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Bharatpe Payment InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Bharatpe Payment Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Idfc First Finance",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Idfc First Finance InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Idfc First Finance Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Upgrad Program",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Upgrad Program InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Upgrad Program Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "MAHINDRA FINANCE",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "MAHINDRA FINANCE InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MAHINDRA FINANCE Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Paytm  Credit Card / Debit Card",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Paytm  Credit Card / Debit Card InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Paytm  Credit Card / Debit Card Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "ZEST MONEY FINANCE",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "ZEST MONEY FINANCE InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ZEST MONEY FINANCE Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Innoviti  Credit Card / Debit Card",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Innoviti  Credit Card / Debit Card InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Innoviti  Credit Card / Debit Card Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "S S K  APPLIENCES",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "S S K  APPLIENCES InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "S S K  APPLIENCES Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Flipkart",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Flipkart InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Flipkart Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Order Id",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Order Id InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Order Id Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Reference Number",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Reference Number InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Reference Number Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Flipkart Commission Charges",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Flipkart Commission Charges InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Flipkart Commission Charges Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Amazon Commission Charges",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Amazon Commission Charges InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Amazon Commission Charges Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Tcs And Tds",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Tcs And Tds InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Tcs And Tds Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "In Account",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "In Account InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "In Account Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Bajaj Credit Card / Debit Card",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Bajaj Credit Card / Debit Card InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Bajaj Credit Card / Debit Card Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Chola Finance",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Chola Finance InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Chola Finance Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Kotak Mahindra Bank Finance",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Kotak Mahindra Bank Finance InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Kotak Mahindra Bank Finance Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Gift Account",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Gift Account InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Gift Account Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Tcs Gst",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Tcs Gst InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Tcs Gst Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Tds Income Tax",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Tds Income Tax InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Tds Income Tax Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Flipkart Invoice No",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Flipkart Invoice No InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Flipkart Invoice No Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Amazon Invoice No",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Amazon Invoice No InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Amazon Invoice No Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Benow Payment",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Benow Payment InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Benow Payment Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Poonawalla Fincorp Limited",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Poonawalla Fincorp Limited InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Poonawalla Fincorp Limited Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Advance",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Advance InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Advance Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Amezon1",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Amezon1 InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Amezon1 Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Baghbahar Pvt Ltd",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Baghbahar Pvt Ltd InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Baghbahar Pvt Ltd Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Bajaj Finance Online",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Bajaj Finance Online InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Bajaj Finance Online Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "INSTANT CASHBACK",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "INSTANT CASHBACK InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "INSTANT CASHBACK Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Manik Online Website",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Manik Online Website InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Manik Online Website Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "Old Buyback",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Old Buyback InstruNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Old Buyback Instrudate",
+						"type": "datetime2",
+						"scale": 7
+					},
+					{
+						"name": "BharatPayUTR",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Historic_Mastersales"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CraftaiManikSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HistoricPurchaseData_V1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CraftaiManikSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Branch",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Brand",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Color",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Company",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CounterNo",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Date",
+						"type": "smalldatetime",
+						"precision": 16,
+						"scale": 0
+					},
+					{
+						"name": "HSNCode",
+						"type": "nvarchar"
+					},
+					{
+						"name": "IMEIno",
+						"type": "nvarchar"
+					},
+					{
+						"name": "DiscAmt",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Location",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Model",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MProductId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MRP",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Narration",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Product Markdown",
+						"type": "decimal",
+						"precision": 38,
+						"scale": 6
+					},
+					{
+						"name": "Product Markup",
+						"type": "decimal",
+						"precision": 38,
+						"scale": 6
+					},
+					{
+						"name": "ProductMOP",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "ProductName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Product Purchase Remark",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Product Remark",
+						"type": "nvarchar"
+					},
+					{
+						"name": "uProduct DiscPer",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Productid",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "Purchase Rate",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "SalePrice",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Subcategory",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Supplier Billdate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Supplier",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Supplier GSTIN",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Supplier ShortName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Supplier Type",
+						"type": "nvarchar"
+					},
+					{
+						"name": "User",
+						"type": "nvarchar"
+					},
+					{
+						"name": "VAT/GST %",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "VoucherNo",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "Qty",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 3
+					},
+					{
+						"name": "Dealer cost",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Gross",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Basic",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "IGSTAmount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "SGSTAmount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "CGSTAmount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "HistoricPurchaseData"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CraftaiManikSQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HistoricSalesData_v1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CraftaiManikSQL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Actual sale Rate",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "batchno",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Billtime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Branch",
+						"type": "nvarchar"
+					},
+					{
+						"name": "BranchShortName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Brand",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Company",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CounterNo",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "CPU+GST",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CustomerGroup",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CustomerGSTIN",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Custid",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "CustomerPANNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CustomerState",
+						"type": "nvarchar"
+					},
+					{
+						"name": "date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "EAN ProductId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "EWAYBIllno",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ExpiryDate",
+						"type": "nvarchar"
+					},
+					{
+						"name": "HSNCode",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PurDate",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LastPurQty",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "LineDisc%",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "MRP",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Product Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ProductId",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "REorderLevel",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 3
+					},
+					{
+						"name": "ReOrderQty",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 3
+					},
+					{
+						"name": "SaleRate",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "SaleMobileNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Salesman",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SalesmanId",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "Subcategory",
+						"type": "nvarchar"
+					},
+					{
+						"name": "User",
+						"type": "nvarchar"
+					},
+					{
+						"name": "VAT/GST %",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "VoucherNo",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "Quantity",
+						"type": "decimal",
+						"precision": 25,
+						"scale": 4
+					},
+					{
+						"name": "Customer Address",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Line Discount Amt",
+						"type": "real",
+						"precision": 7
+					},
+					{
+						"name": "LineAmt",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "FullImeiNo",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Activationdate",
+						"type": "varchar"
+					},
+					{
+						"name": "IRNno",
+						"type": "nvarchar"
+					},
+					{
+						"name": "IRNdate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "GrossAmt",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "BasicAmt",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "CGSTAmount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "SGSTAmount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "IGSTAmount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Mop",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "HistoricSalesData"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CraftaiManikSQL')]"
+			]
+		}
+	]
+}

@@ -1,0 +1,57 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-ci-craftai"
+		},
+		"BharatPay_accountKey": {
+			"value": ""
+		},
+		"CraftManaikTxUTR_password": {
+			"value": ""
+		},
+		"CraftaiManikSQL_password": {
+			"value": ""
+		},
+		"ManikSqlServer_password": {
+			"value": ""
+		},
+		"BharatPay_properties_typeProperties_url": {
+			"value": "https://storagevoicebotcraftai.dfs.core.windows.net/"
+		},
+		"CraftManaikTxUTR_properties_typeProperties_server": {
+			"value": "172.198.70.190"
+		},
+		"CraftManaikTxUTR_properties_typeProperties_database": {
+			"value": "TxUTR"
+		},
+		"CraftManaikTxUTR_properties_typeProperties_userName": {
+			"value": "craftai"
+		},
+		"CraftaiManikSQL_properties_typeProperties_server": {
+			"value": "172.198.70.190"
+		},
+		"CraftaiManikSQL_properties_typeProperties_database": {
+			"value": "ManikMobile"
+		},
+		"CraftaiManikSQL_properties_typeProperties_userName": {
+			"value": "craftai"
+		},
+		"ManikSqlServer_properties_typeProperties_server": {
+			"value": "125.20.207.170"
+		},
+		"ManikSqlServer_properties_typeProperties_database": {
+			"value": "Upplus"
+		},
+		"ManikSqlServer_properties_typeProperties_userName": {
+			"value": "Historic"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
