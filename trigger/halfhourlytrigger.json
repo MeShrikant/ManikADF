@@ -21,6 +21,12 @@
 					"referenceName": "HistoricInterBranch",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "HistoricStock",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
