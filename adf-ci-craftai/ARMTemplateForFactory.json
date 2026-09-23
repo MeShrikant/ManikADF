@@ -4306,6 +4306,27 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "HistoricPurchaseData",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "HistoricSalesData",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "HistoricStock",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					}
 				],
 				"type": "ScheduleTrigger",
@@ -4319,7 +4340,10 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/HistoricInterBranch')]"
+				"[concat(variables('factoryId'), '/pipelines/HistoricInterBranch')]",
+				"[concat(variables('factoryId'), '/pipelines/HistoricPurchaseData')]",
+				"[concat(variables('factoryId'), '/pipelines/HistoricSalesData')]",
+				"[concat(variables('factoryId'), '/pipelines/HistoricStock')]"
 			]
 		}
 	]
