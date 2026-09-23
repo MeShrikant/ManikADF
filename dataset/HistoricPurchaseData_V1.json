@@ -1,0 +1,224 @@
+{
+	"name": "HistoricPurchaseData_V1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CraftaiManikSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "Type",
+				"type": "varchar"
+			},
+			{
+				"name": "Branch",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Brand",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Category",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Color",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Company",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CounterNo",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Date",
+				"type": "smalldatetime",
+				"precision": 16,
+				"scale": 0
+			},
+			{
+				"name": "HSNCode",
+				"type": "nvarchar"
+			},
+			{
+				"name": "IMEIno",
+				"type": "nvarchar"
+			},
+			{
+				"name": "DiscAmt",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Location",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Model",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MProductId",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MRP",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Narration",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Product Markdown",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 6
+			},
+			{
+				"name": "Product Markup",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 6
+			},
+			{
+				"name": "ProductMOP",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "ProductName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Product Purchase Remark",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Product Remark",
+				"type": "nvarchar"
+			},
+			{
+				"name": "uProduct DiscPer",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Productid",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "Purchase Rate",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "SalePrice",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Subcategory",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Supplier Billdate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Supplier",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Supplier GSTIN",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Supplier ShortName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Supplier Type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "User",
+				"type": "nvarchar"
+			},
+			{
+				"name": "VAT/GST %",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "VoucherNo",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "Qty",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 3
+			},
+			{
+				"name": "Dealer cost",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Gross",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Basic",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "IGSTAmount",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "SGSTAmount",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "CGSTAmount",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "HistoricPurchaseData"
+		}
+	}
+}

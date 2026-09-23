@@ -1,0 +1,766 @@
+{
+	"name": "Historic_Mastersales_v1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CraftaiManikSQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "Branch",
+				"type": "nvarchar"
+			},
+			{
+				"name": "voucherno",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "date",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Time",
+				"type": "nvarchar"
+			},
+			{
+				"name": "custid",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "customer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "GSTIN",
+				"type": "nvarchar"
+			},
+			{
+				"name": "TCSApplicableAmt",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "TcsAmount",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Netamount",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "cash",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "AC",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "AC InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "AC InstruDate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Advance1",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Advance1 InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Advance1 Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "AMAZON",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "AMAZON InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "AMAZON Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Bajaj Finance",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Bajaj Finance InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bajaj Finance Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Cheque",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Cheque InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cheque Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Pinelab  Credit Card / Debit Card",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Pinelab  Credit Card / Debit Card InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Pinelab  Credit Card / Debit Card Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Credit Note",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Credit Note InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Credit Note Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Hdb Finance",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Hdb Finance InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Hdb Finance Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Hdfc Finance",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Hdfc Finance InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Hdfc Finance Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Home Credit Finance",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Home Credit Finance InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Home Credit Finance Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Online Payment Transfer",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Online Payment Transfer InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Online Payment Transfer Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Samsung Sure Finance",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Samsung Sure Finance InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Samsung Sure Finance Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Tvs Finance",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Tvs Finance InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tvs Finance Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Icici Finance",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Icici Finance InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Icici Finance Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Bharatpe Payment",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Bharatpe Payment InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bharatpe Payment Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Idfc First Finance",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Idfc First Finance InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Idfc First Finance Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Upgrad Program",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Upgrad Program InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Upgrad Program Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "MAHINDRA FINANCE",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "MAHINDRA FINANCE InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MAHINDRA FINANCE Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Paytm  Credit Card / Debit Card",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Paytm  Credit Card / Debit Card InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Paytm  Credit Card / Debit Card Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "ZEST MONEY FINANCE",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "ZEST MONEY FINANCE InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ZEST MONEY FINANCE Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Innoviti  Credit Card / Debit Card",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Innoviti  Credit Card / Debit Card InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Innoviti  Credit Card / Debit Card Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "S S K  APPLIENCES",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "S S K  APPLIENCES InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "S S K  APPLIENCES Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Flipkart",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Flipkart InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Flipkart Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Order Id",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Order Id InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Order Id Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Reference Number",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Reference Number InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Reference Number Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Flipkart Commission Charges",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Flipkart Commission Charges InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Flipkart Commission Charges Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Amazon Commission Charges",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Amazon Commission Charges InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Amazon Commission Charges Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Tcs And Tds",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Tcs And Tds InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tcs And Tds Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "In Account",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "In Account InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "In Account Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Bajaj Credit Card / Debit Card",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Bajaj Credit Card / Debit Card InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bajaj Credit Card / Debit Card Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Chola Finance",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Chola Finance InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Chola Finance Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Kotak Mahindra Bank Finance",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Kotak Mahindra Bank Finance InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Kotak Mahindra Bank Finance Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Gift Account",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Gift Account InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Gift Account Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Tcs Gst",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Tcs Gst InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tcs Gst Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Tds Income Tax",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Tds Income Tax InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tds Income Tax Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Flipkart Invoice No",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Flipkart Invoice No InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Flipkart Invoice No Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Amazon Invoice No",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Amazon Invoice No InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Amazon Invoice No Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Benow Payment",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Benow Payment InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Benow Payment Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Poonawalla Fincorp Limited",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Poonawalla Fincorp Limited InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Poonawalla Fincorp Limited Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Advance",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Advance InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Advance Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Amezon1",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Amezon1 InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Amezon1 Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Baghbahar Pvt Ltd",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Baghbahar Pvt Ltd InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Baghbahar Pvt Ltd Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Bajaj Finance Online",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Bajaj Finance Online InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bajaj Finance Online Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "INSTANT CASHBACK",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "INSTANT CASHBACK InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "INSTANT CASHBACK Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Manik Online Website",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Manik Online Website InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Manik Online Website Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Old Buyback",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "Old Buyback InstruNo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Old Buyback Instrudate",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "BharatPayUTR",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Historic_Mastersales"
+		}
+	}
+}
