@@ -397,7 +397,7 @@
 							},
 							"staging": {},
 							"compute": {
-								"coreCount": 8,
+								"coreCount": 16,
 								"computeType": "General"
 							},
 							"traceLevel": "Fine"
@@ -4327,6 +4327,13 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "Historic_Mastersales",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					}
 				],
 				"type": "ScheduleTrigger",
@@ -4343,7 +4350,8 @@
 				"[concat(variables('factoryId'), '/pipelines/HistoricInterBranch')]",
 				"[concat(variables('factoryId'), '/pipelines/HistoricPurchaseData')]",
 				"[concat(variables('factoryId'), '/pipelines/HistoricSalesData')]",
-				"[concat(variables('factoryId'), '/pipelines/HistoricStock')]"
+				"[concat(variables('factoryId'), '/pipelines/HistoricStock')]",
+				"[concat(variables('factoryId'), '/pipelines/Historic_Mastersales')]"
 			]
 		}
 	]
