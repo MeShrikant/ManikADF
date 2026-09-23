@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "newTransactiondata",
+						"referenceName": "newTransactiondata_v1",
 						"type": "DatasetReference"
 					},
 					"name": "bhartpaynew",
@@ -14,7 +14,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "ManikSQLServerProd",
+						"referenceName": "ManikSQLServer",
 						"type": "DatasetReference"
 					},
 					"name": "MAsterdata"
@@ -23,7 +23,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "CraftAIManikTxUTR",
+						"referenceName": "CraftAIManikTxUTR_V1",
 						"type": "DatasetReference"
 					},
 					"name": "BharatpayNew",
@@ -240,6 +240,23 @@
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"select1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     input(",
+				"          Branch as string,",
+				"          voucherno as long,",
+				"          PaymentType as string,",
+				"          instruNo as string,",
+				"          Instrudate as timestamp,",
+				"          Amount as decimal(19,4),",
+				"          VoucherDate as timestamp,",
+				"          VoucherTime as timestamp,",
+				"          date as timestamp,",
+				"          Time as string,",
+				"          custid as long,",
+				"          customer as string,",
+				"          GSTIN as string,",
+				"          Netamount as decimal(19,4),",
+				"          RetailwareID as integer",
+				"     ),",
 				"     deletable:false,",
 				"     insertable:true,",
 				"     updateable:false,",
