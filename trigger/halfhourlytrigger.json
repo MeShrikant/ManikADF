@@ -9,6 +9,12 @@
 					"referenceName": "HistoricInterBranch",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "HistoricPurchaseData",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
