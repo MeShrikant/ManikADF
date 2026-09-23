@@ -48,7 +48,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "HistoricInterBranch",
+						"referenceName": "HistoricInterBranch_V1",
 						"type": "DatasetReference"
 					}
 				]
@@ -99,7 +99,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "HistoricPurchaseData",
+						"referenceName": "HistoricPurchaseData_V1",
 						"type": "DatasetReference"
 					}
 				]
@@ -147,7 +147,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "HistoricSalesData",
+						"referenceName": "HistoricSalesData_v1",
 						"type": "DatasetReference"
 					}
 				]
@@ -198,7 +198,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "HistoricStock",
+						"referenceName": "HistoricStock_v1",
 						"type": "DatasetReference"
 					}
 				]
