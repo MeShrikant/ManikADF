@@ -699,35 +699,14 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "HistoricPurchaseData",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "HistoricStock",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "HistoricSalesData",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
 					}
 				],
 				"type": "ScheduleTrigger",
 				"typeProperties": {
 					"recurrence": {
 						"frequency": "Minute",
-						"interval": 30,
-						"startTime": "2025-09-21T16:26:00",
+						"interval": 15,
+						"startTime": "2026-09-23T12:01:00",
 						"timeZone": "India Standard Time"
 					}
 				}

@@ -3190,60 +3190,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/halfhourlytrigger')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "HistoricInterBranch",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "HistoricPurchaseData",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "HistoricStock",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "HistoricSalesData",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Minute",
-						"interval": 30,
-						"startTime": "2025-09-21T16:26:00",
-						"timeZone": "India Standard Time"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/HistoricInterBranch')]",
-				"[concat(variables('factoryId'), '/pipelines/HistoricPurchaseData')]",
-				"[concat(variables('factoryId'), '/pipelines/HistoricStock')]",
-				"[concat(variables('factoryId'), '/pipelines/HistoricSalesData')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/integrationRuntime-ci')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -4344,6 +4290,36 @@
 				"[concat(variables('factoryId'), '/datasets/newTransactiondata_v1')]",
 				"[concat(variables('factoryId'), '/datasets/ManikSQLServer')]",
 				"[concat(variables('factoryId'), '/datasets/CraftAIManikTxUTR_V1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/halfhourlytrigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "HistoricInterBranch",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 15,
+						"startTime": "2026-09-23T12:01:00",
+						"timeZone": "India Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/HistoricInterBranch')]"
 			]
 		}
 	]
