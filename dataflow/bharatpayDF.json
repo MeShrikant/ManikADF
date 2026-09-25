@@ -192,7 +192,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     query: (concat(\"select * from [dbo].[Historic_Mastersales] where date = '\",$today_date , \"'\")),",
+				"     query: (concat(\"select * from [dbo].[Historic_Mastersales] where date >= '2026-09-15'\")),",
 				"     format: 'query') ~> CraftAISQLMasterSales",
 				"CraftAISQLMasterSales derive(BharatPayUTR = substring({Bharatpe Payment InstruNo}, 7)) ~> BharatPayUTR",
 				"BharatPayUTR sink(allowSchemaDrift: true,",
