@@ -18,7 +18,7 @@
 					"source": {
 						"type": "SqlServerSource",
 						"sqlReaderQuery": {
-							"value": "@concat(\n'select * from [dbo].[HistoricPurchaseData] where date >= ''',\npipeline().parameters.LoadDate,\n''''\n)",
+							"value": "select * from [dbo].[HistoricPurchaseData] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -27,7 +27,7 @@
 					"sink": {
 						"type": "SqlServerSink",
 						"preCopyScript": {
-							"value": "@concat(\n'delete from [dbo].[HistoricPurchaseData] where date >= ''',\npipeline().parameters.LoadDate,\n''''\n)",
+							"value": "delete from  [dbo].[HistoricPurchaseData] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'",
 							"type": "Expression"
 						},
 						"writeBehavior": "insert",
@@ -57,12 +57,6 @@
 				]
 			}
 		],
-		"parameters": {
-			"LoadDate": {
-				"type": "string",
-				"defaultValue": "2026-09-15"
-			}
-		},
 		"annotations": [],
 		"lastPublishTime": "2026-09-25T03:21:58Z"
 	},
