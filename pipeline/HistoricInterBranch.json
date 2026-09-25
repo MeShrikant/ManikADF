@@ -18,7 +18,7 @@
 					"source": {
 						"type": "SqlServerSource",
 						"sqlReaderQuery": {
-							"value": "select * from [dbo].[HistoricInterBranch] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+							"value": "@concat(\n'select * from [dbo].[HistoricInterBranch] where date >= ''',\npipeline().parameters.LoadDate,\n''''\n)",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -27,7 +27,7 @@
 					"sink": {
 						"type": "SqlServerSink",
 						"preCopyScript": {
-							"value": "delete from [dbo].[HistoricInterBranch] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+							"value": "@concat(\n'delete from [dbo].[HistoricInterBranch] where date >= ''',\npipeline().parameters.LoadDate,\n''''\n)",
 							"type": "Expression"
 						},
 						"writeBehavior": "insert",
@@ -57,8 +57,14 @@
 				]
 			}
 		],
+		"parameters": {
+			"LoadDate": {
+				"type": "string",
+				"defaultValue": "@formatDateTime(utcNow(),'yyyy-MM-dd')"
+			}
+		},
 		"annotations": [],
-		"lastPublishTime": "2025-12-26T14:43:31Z"
+		"lastPublishTime": "2026-09-25T03:39:42Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

@@ -131,5 +131,6 @@
 			"schema": "dbo",
 			"table": "HistoricStock"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }
