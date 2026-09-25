@@ -90,7 +90,7 @@
 							"source": {
 								"type": "SqlServerSource",
 								"sqlReaderQuery": {
-									"value": "select * from [dbo].[HistoricInterBranch] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"value": "@concat(\n'select * from [dbo].[HistoricInterBranch] where date >= ''',\npipeline().parameters.LoadDate,\n''''\n)",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
@@ -99,7 +99,7 @@
 							"sink": {
 								"type": "SqlServerSink",
 								"preCopyScript": {
-									"value": "delete from [dbo].[HistoricInterBranch] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"value": "@concat(\n'delete from [dbo].[HistoricInterBranch] where date >= ''',\npipeline().parameters.LoadDate,\n''''\n)",
 									"type": "Expression"
 								},
 								"writeBehavior": "insert",
@@ -134,8 +134,14 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"parameters": {
+					"LoadDate": {
+						"type": "string",
+						"defaultValue": "@formatDateTime(utcNow(),'yyyy-MM-dd')"
+					}
+				},
 				"annotations": [],
-				"lastPublishTime": "2025-12-26T14:43:31Z"
+				"lastPublishTime": "2026-09-25T03:39:42Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ManikSQLServer')]",
@@ -164,7 +170,7 @@
 							"source": {
 								"type": "SqlServerSource",
 								"sqlReaderQuery": {
-									"value": "select * from [dbo].[HistoricPurchaseData] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"value": "@concat(\n'select * from [dbo].[HistoricPurchaseData] where date >= ''',\npipeline().parameters.LoadDate,\n''''\n)",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
@@ -173,7 +179,7 @@
 							"sink": {
 								"type": "SqlServerSink",
 								"preCopyScript": {
-									"value": "Delete from [dbo].[HistoricPurchaseData] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"value": "@concat(\n'delete from [dbo].[HistoricPurchaseData] where date >= ''',\npipeline().parameters.LoadDate,\n''''\n)",
 									"type": "Expression"
 								},
 								"writeBehavior": "insert",
@@ -208,8 +214,14 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"parameters": {
+					"LoadDate": {
+						"type": "string",
+						"defaultValue": "2026-09-15"
+					}
+				},
 				"annotations": [],
-				"lastPublishTime": "2025-12-26T14:43:31Z"
+				"lastPublishTime": "2026-09-25T03:21:58Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ManikSQLServer')]",
@@ -238,7 +250,7 @@
 							"source": {
 								"type": "SqlServerSource",
 								"sqlReaderQuery": {
-									"value": "select * from [dbo].[HistoricSalesData] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"value": "@concat(\n'select * from [dbo].[HistoricSalesData] where date >= ''',\npipeline().parameters.LoadDate,\n''''\n)",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
@@ -247,7 +259,7 @@
 							"sink": {
 								"type": "SqlServerSink",
 								"preCopyScript": {
-									"value": "Delete from [dbo].[HistoricSalesData] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"value": "@concat(\n'delete from [dbo].[HistoricSalesData] where date >= ''',\npipeline().parameters.LoadDate,\n''''\n)",
 									"type": "Expression"
 								},
 								"writeBehavior": "insert",
@@ -282,8 +294,14 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"parameters": {
+					"LoadDate": {
+						"type": "string",
+						"defaultValue": "2026-09-15"
+					}
+				},
 				"annotations": [],
-				"lastPublishTime": "2025-12-26T14:43:31Z"
+				"lastPublishTime": "2026-09-25T03:21:58Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ManikSQLServer')]",
@@ -312,7 +330,7 @@
 							"source": {
 								"type": "SqlServerSource",
 								"sqlReaderQuery": {
-									"value": "select * from [dbo].[HistoricStock] where PurchaseDate = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"value": "@concat(\n'select * from [dbo].[HistoricStock] where PurchaseDate >= ''',\npipeline().parameters.LoadDate,\n''''\n)",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
@@ -321,7 +339,7 @@
 							"sink": {
 								"type": "SqlServerSink",
 								"preCopyScript": {
-									"value": "delete from [dbo].[HistoricStock] where PurchaseDate = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"value": "@concat(\n'delete from [dbo].[HistoricStock] where PurchaseDate >= ''',\npipeline().parameters.LoadDate,\n''''\n)",
 									"type": "Expression"
 								},
 								"writeBehavior": "insert",
@@ -356,8 +374,14 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"parameters": {
+					"LoadDate": {
+						"type": "string",
+						"defaultValue": "2026-09-15"
+					}
+				},
 				"annotations": [],
-				"lastPublishTime": "2025-12-26T14:43:31Z"
+				"lastPublishTime": "2026-09-25T03:26:11Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ManikSQLServer')]",
@@ -436,7 +460,7 @@
 					"elapsedTimeMetric": {}
 				},
 				"annotations": [],
-				"lastPublishTime": "2025-12-26T16:15:27Z"
+				"lastPublishTime": "2026-09-23T12:16:54Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/bharatpayDF')]",
@@ -760,7 +784,7 @@
 					"elapsedTimeMetric": {}
 				},
 				"annotations": [],
-				"lastPublishTime": "2025-12-26T16:19:10Z"
+				"lastPublishTime": "2026-09-23T08:24:37Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ManikSQLServer')]",
@@ -3190,6 +3214,68 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/halfhourlytrigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "HistoricInterBranch",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "HistoricPurchaseData",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "HistoricSalesData",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "HistoricStock",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "Historic_Mastersales",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 15,
+						"startTime": "2026-09-23T12:01:00",
+						"timeZone": "India Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/HistoricInterBranch')]",
+				"[concat(variables('factoryId'), '/pipelines/HistoricPurchaseData')]",
+				"[concat(variables('factoryId'), '/pipelines/HistoricSalesData')]",
+				"[concat(variables('factoryId'), '/pipelines/HistoricStock')]",
+				"[concat(variables('factoryId'), '/pipelines/Historic_Mastersales')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/integrationRuntime-ci')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -4290,68 +4376,6 @@
 				"[concat(variables('factoryId'), '/datasets/newTransactiondata_v1')]",
 				"[concat(variables('factoryId'), '/datasets/ManikSQLServer')]",
 				"[concat(variables('factoryId'), '/datasets/CraftAIManikTxUTR_V1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/halfhourlytrigger')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "HistoricInterBranch",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "HistoricPurchaseData",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "HistoricSalesData",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "HistoricStock",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "Historic_Mastersales",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Minute",
-						"interval": 15,
-						"startTime": "2026-09-23T12:01:00",
-						"timeZone": "India Standard Time"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/HistoricInterBranch')]",
-				"[concat(variables('factoryId'), '/pipelines/HistoricPurchaseData')]",
-				"[concat(variables('factoryId'), '/pipelines/HistoricSalesData')]",
-				"[concat(variables('factoryId'), '/pipelines/HistoricStock')]",
-				"[concat(variables('factoryId'), '/pipelines/Historic_Mastersales')]"
 			]
 		}
 	]

@@ -358,7 +358,7 @@
 					"elapsedTimeMetric": {}
 				},
 				"annotations": [],
-				"lastPublishTime": "2025-12-26T16:15:27Z"
+				"lastPublishTime": "2026-09-23T12:16:54Z"
 			},
 			"dependsOn": []
 		},
@@ -679,7 +679,7 @@
 					"elapsedTimeMetric": {}
 				},
 				"annotations": [],
-				"lastPublishTime": "2025-12-26T16:19:10Z"
+				"lastPublishTime": "2026-09-23T08:24:37Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/bharatpay_NEW_One_Time')]"
@@ -691,7 +691,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {

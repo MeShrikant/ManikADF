@@ -2537,7 +2537,7 @@
 							"source": {
 								"type": "SqlServerSource",
 								"sqlReaderQuery": {
-									"value": "select * from [dbo].[HistoricInterBranch] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"value": "@concat(\n'select * from [dbo].[HistoricInterBranch] where date >= ''',\npipeline().parameters.LoadDate,\n''''\n)",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
@@ -2546,7 +2546,7 @@
 							"sink": {
 								"type": "SqlServerSink",
 								"preCopyScript": {
-									"value": "delete from [dbo].[HistoricInterBranch] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"value": "@concat(\n'delete from [dbo].[HistoricInterBranch] where date >= ''',\npipeline().parameters.LoadDate,\n''''\n)",
 									"type": "Expression"
 								},
 								"writeBehavior": "insert",
@@ -2581,8 +2581,14 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"parameters": {
+					"LoadDate": {
+						"type": "string",
+						"defaultValue": "@formatDateTime(utcNow(),'yyyy-MM-dd')"
+					}
+				},
 				"annotations": [],
-				"lastPublishTime": "2025-12-26T14:43:31Z"
+				"lastPublishTime": "2026-09-25T03:39:42Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ManikSQLServer')]",
@@ -2611,7 +2617,7 @@
 							"source": {
 								"type": "SqlServerSource",
 								"sqlReaderQuery": {
-									"value": "select * from [dbo].[HistoricPurchaseData] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"value": "@concat(\n'select * from [dbo].[HistoricPurchaseData] where date >= ''',\npipeline().parameters.LoadDate,\n''''\n)",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
@@ -2620,7 +2626,7 @@
 							"sink": {
 								"type": "SqlServerSink",
 								"preCopyScript": {
-									"value": "Delete from [dbo].[HistoricPurchaseData] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"value": "@concat(\n'delete from [dbo].[HistoricPurchaseData] where date >= ''',\npipeline().parameters.LoadDate,\n''''\n)",
 									"type": "Expression"
 								},
 								"writeBehavior": "insert",
@@ -2655,8 +2661,14 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"parameters": {
+					"LoadDate": {
+						"type": "string",
+						"defaultValue": "2026-09-15"
+					}
+				},
 				"annotations": [],
-				"lastPublishTime": "2025-12-26T14:43:31Z"
+				"lastPublishTime": "2026-09-25T03:21:58Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ManikSQLServer')]",
@@ -2685,7 +2697,7 @@
 							"source": {
 								"type": "SqlServerSource",
 								"sqlReaderQuery": {
-									"value": "select * from [dbo].[HistoricSalesData] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"value": "@concat(\n'select * from [dbo].[HistoricSalesData] where date >= ''',\npipeline().parameters.LoadDate,\n''''\n)",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
@@ -2694,7 +2706,7 @@
 							"sink": {
 								"type": "SqlServerSink",
 								"preCopyScript": {
-									"value": "Delete from [dbo].[HistoricSalesData] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"value": "@concat(\n'delete from [dbo].[HistoricSalesData] where date >= ''',\npipeline().parameters.LoadDate,\n''''\n)",
 									"type": "Expression"
 								},
 								"writeBehavior": "insert",
@@ -2729,8 +2741,14 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"parameters": {
+					"LoadDate": {
+						"type": "string",
+						"defaultValue": "2026-09-15"
+					}
+				},
 				"annotations": [],
-				"lastPublishTime": "2025-12-26T14:43:31Z"
+				"lastPublishTime": "2026-09-25T03:21:58Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ManikSQLServer')]",
@@ -2759,7 +2777,7 @@
 							"source": {
 								"type": "SqlServerSource",
 								"sqlReaderQuery": {
-									"value": "select * from [dbo].[HistoricStock] where PurchaseDate = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"value": "@concat(\n'select * from [dbo].[HistoricStock] where PurchaseDate >= ''',\npipeline().parameters.LoadDate,\n''''\n)",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
@@ -2768,7 +2786,7 @@
 							"sink": {
 								"type": "SqlServerSink",
 								"preCopyScript": {
-									"value": "delete from [dbo].[HistoricStock] where PurchaseDate = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
+									"value": "@concat(\n'delete from [dbo].[HistoricStock] where PurchaseDate >= ''',\npipeline().parameters.LoadDate,\n''''\n)",
 									"type": "Expression"
 								},
 								"writeBehavior": "insert",
@@ -2803,8 +2821,14 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"parameters": {
+					"LoadDate": {
+						"type": "string",
+						"defaultValue": "2026-09-15"
+					}
+				},
 				"annotations": [],
-				"lastPublishTime": "2025-12-26T14:43:31Z"
+				"lastPublishTime": "2026-09-25T03:26:11Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ManikSQLServer')]",
