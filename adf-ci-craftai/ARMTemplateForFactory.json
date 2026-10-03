@@ -4667,7 +4667,8 @@
 				},
 				"parameters": {
 					"LoadDate": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "2026-10-02"
 					}
 				},
 				"annotations": [],
