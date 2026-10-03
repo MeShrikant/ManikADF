@@ -135,7 +135,7 @@
 					"elapsedTimeMetric": {}
 				},
 				"annotations": [],
-				"lastPublishTime": "2026-09-25T03:39:42Z"
+				"lastPublishTime": "2026-09-25T03:58:45Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ManikSQLServer')]",
@@ -209,7 +209,7 @@
 					"elapsedTimeMetric": {}
 				},
 				"annotations": [],
-				"lastPublishTime": "2026-09-25T03:21:58Z"
+				"lastPublishTime": "2026-09-25T03:58:45Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ManikSQLServer')]",
@@ -238,7 +238,7 @@
 							"source": {
 								"type": "SqlServerSource",
 								"sqlReaderQuery": {
-									"value": "select * from [dbo].[HistoricSalesData] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'",
+									"value": "select * from [dbo].[HistoricSalesData] where date = '2026-09-29'",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
@@ -247,7 +247,7 @@
 							"sink": {
 								"type": "SqlServerSink",
 								"preCopyScript": {
-									"value": "delete from  [dbo].[HistoricSalesData] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'",
+									"value": "delete from  [dbo].[HistoricSalesData] where date = '2026-09-29'",
 									"type": "Expression"
 								},
 								"writeBehavior": "insert",
@@ -283,7 +283,7 @@
 					"elapsedTimeMetric": {}
 				},
 				"annotations": [],
-				"lastPublishTime": "2026-09-25T03:21:58Z"
+				"lastPublishTime": "2026-10-01T19:33:30Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ManikSQLServer')]",
@@ -357,7 +357,7 @@
 					"elapsedTimeMetric": {}
 				},
 				"annotations": [],
-				"lastPublishTime": "2026-09-25T03:26:11Z"
+				"lastPublishTime": "2026-09-25T03:58:45Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ManikSQLServer')]",
@@ -436,7 +436,7 @@
 					"elapsedTimeMetric": {}
 				},
 				"annotations": [],
-				"lastPublishTime": "2026-09-23T12:16:54Z"
+				"lastPublishTime": "2026-10-01T13:16:58Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/bharatpayDF')]",
@@ -760,7 +760,7 @@
 					"elapsedTimeMetric": {}
 				},
 				"annotations": [],
-				"lastPublishTime": "2026-09-23T08:24:37Z"
+				"lastPublishTime": "2026-09-25T03:48:22Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ManikSQLServer')]",
