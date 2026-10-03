@@ -691,7 +691,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -914,7 +914,7 @@
 							"source": {
 								"type": "SqlServerSource",
 								"sqlReaderQuery": {
-									"value": "@concat(\n'select * from [dbo].[HistoricStock] where date = ''',\npipeline().parameters.LoadDate,\n''''\n)\n",
+									"value": "@concat(\n'select * from [dbo].[HistoricStock] where PurchaseDate = ''',\npipeline().parameters.LoadDate,\n''''\n)\n",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
@@ -922,7 +922,10 @@
 							},
 							"sink": {
 								"type": "SqlServerSink",
-								"preCopyScript": "@concat(\n'delete from [dbo].[HistoricStock] where date = ''',\npipeline().parameters.LoadDate,\n''''\n)\n",
+								"preCopyScript": {
+									"value": "@concat(\n'delete from [dbo].[HistoricStock] where PurchaseDate = ''',\npipeline().parameters.LoadDate,\n''''\n)\n",
+									"type": "Expression"
+								},
 								"writeBehavior": "insert",
 								"sqlWriterUseTableLock": false,
 								"tableOption": "autoCreate"
