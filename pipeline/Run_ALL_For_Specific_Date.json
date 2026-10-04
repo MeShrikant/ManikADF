@@ -26,7 +26,10 @@
 					},
 					"sink": {
 						"type": "SqlServerSink",
-						"preCopyScript": "@concat(\n'delete from [dbo].[HistoricInterBranch] where date = ''',\npipeline().parameters.LoadDate,\n''''\n)\n",
+						"preCopyScript": {
+							"value": "@concat(\n'delete from [dbo].[HistoricInterBranch] where date = ''',\npipeline().parameters.LoadDate,\n''''\n)\n",
+							"type": "Expression"
+						},
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate"
@@ -78,7 +81,10 @@
 					},
 					"sink": {
 						"type": "SqlServerSink",
-						"preCopyScript": "@concat(\n'delete from [dbo].[HistoricPurchaseData] where date = ''',\npipeline().parameters.LoadDate,\n''''\n)\n",
+						"preCopyScript": {
+							"value": "@concat(\n'delete from [dbo].[HistoricPurchaseData] where date = ''',\npipeline().parameters.LoadDate,\n''''\n)\n",
+							"type": "Expression"
+						},
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false
 					},
@@ -120,13 +126,19 @@
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
-						"sqlReaderQuery": "@concat(\n'select * from [dbo].[HistoricSalesData] where date = ''',\npipeline().parameters.LoadDate,\n''''\n)\n",
+						"sqlReaderQuery": {
+							"value": "@concat(\n'select * from [dbo].[HistoricSalesData] where date = ''',\npipeline().parameters.LoadDate,\n''''\n)\n",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
 					"sink": {
 						"type": "SqlServerSink",
-						"preCopyScript": "@concat(\n'delete from [dbo].[HistoricSalesData] where date = ''',\npipeline().parameters.LoadDate,\n''''\n)\n",
+						"preCopyScript": {
+							"value": "@concat(\n'delete from [dbo].[HistoricSalesData] where date = ''',\npipeline().parameters.LoadDate,\n''''\n)\n",
+							"type": "Expression"
+						},
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate"
@@ -297,7 +309,7 @@
 		"parameters": {
 			"LoadDate": {
 				"type": "string",
-				"defaultValue": "2026-10-02"
+				"defaultValue": "2026-10-04"
 			}
 		},
 		"annotations": [],
