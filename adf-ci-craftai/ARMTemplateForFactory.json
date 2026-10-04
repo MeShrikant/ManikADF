@@ -238,7 +238,7 @@
 							"source": {
 								"type": "SqlServerSource",
 								"sqlReaderQuery": {
-									"value": "select * from [dbo].[HistoricSalesData] where date = '2026-09-29'",
+									"value": "select * from [dbo].[HistoricSalesData] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
@@ -247,7 +247,7 @@
 							"sink": {
 								"type": "SqlServerSink",
 								"preCopyScript": {
-									"value": "delete from  [dbo].[HistoricSalesData] where date = '2026-09-29'",
+									"value": "delete from  [dbo].[HistoricSalesData] where date = '@{formatDateTime(utcNow(), 'yyyy-MM-dd')}'\n",
 									"type": "Expression"
 								},
 								"writeBehavior": "insert",
