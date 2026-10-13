@@ -309,7 +309,7 @@
 		"parameters": {
 			"LoadDate": {
 				"type": "string",
-				"defaultValue": "2026-10-04"
+				"defaultValue": "2026-10-11"
 			}
 		},
 		"annotations": [],
