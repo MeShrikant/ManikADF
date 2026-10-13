@@ -1022,7 +1022,7 @@
 				"parameters": {
 					"LoadDate": {
 						"type": "string",
-						"defaultValue": "2026-10-04"
+						"defaultValue": "2026-10-11"
 					}
 				},
 				"annotations": [],
@@ -1072,8 +1072,8 @@
 				"type": "ScheduleTrigger",
 				"typeProperties": {
 					"recurrence": {
-						"frequency": "Minute",
-						"interval": 15,
+						"frequency": "Hour",
+						"interval": 2,
 						"startTime": "2026-09-23T12:01:00",
 						"timeZone": "India Standard Time"
 					}
